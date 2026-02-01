@@ -1,11 +1,11 @@
 # 海子诗歌网站 (HaiZiPoemes)
 
-一个致敬中国当代诗人海子的个人网站，收录其诗歌全集、生平时间轴和相关传记研究。
+一个致敬中国当代诗人海子的个人网站，收录其诗歌全集、生平时间轴等信息。
 
 ## 🌟 项目特点
 
 - **现代化设计**: 简洁优雅的视觉风格，中文排版优化
-- **完整功能**: 诗歌浏览、筛选、搜索，时间轴导航，传记轮播
+- **完整功能**: 诗歌浏览、筛选、搜索，时间轴导航
 - **响应式布局**: 支持桌面端、平板端和移动端
 - **高性能**: 基于 Astro 构建，静态生成，加载快速
 
@@ -13,45 +13,11 @@
 
 - **框架**: [Astro](https://astro.build/) v4.x
 - **样式**: 原生 CSS + CSS Variables
-- **部署**: [Netlify](https://netlify.com/)
-- **字体**: Noto Sans SC, Noto Serif SC, Playfair Display
+- **部署**: [Netlify](https://netlify.com/)（敬请期待）
 
 ## 📁 项目结构
 
-```
-haizipoemes/
-├── public/
-│   ├── images/          # 图片资源
-│   └── favicon.svg      # 网站图标
-├── src/
-│   ├── components/      # 组件
-│   │   └── Navbar.astro # 导航栏
-│   ├── content/         # 内容集合
-│   │   ├── poems/       # 诗歌 (Markdown)
-│   │   ├── biographies/ # 传记 (Markdown)
-│   │   ├── timeline/    # 时间轴 (Markdown)
-│   │   ├── config.ts    # 内容集合配置
-│   │   └── data.ts      # 数据类型定义
-│   ├── layouts/         # 布局
-│   │   └── BaseLayout.astro
-│   ├── pages/           # 页面
-│   │   ├── index.astro          # 首页
-│   │   ├── poetry/              # 诗歌
-│   │   │   ├── index.astro      # 诗歌总览
-│   │   │   └── [id].astro       # 诗歌详情
-│   │   ├── timeline/            # 时间轴
-│   │   │   └── index.astro
-│   │   ├── biographies/         # 传记
-│   │   │   ├── index.astro      # 传记总览
-│   │   │   └── [id].astro       # 传记详情
-│   │   └── conversations.astro  # AI对话 (预留)
-│   └── styles/
-│       └── global.css   # 全局样式
-├── astro.config.mjs     # Astro 配置
-├── netlify.toml         # Netlify 配置
-├── package.json
-└── tsconfig.json
-```
+（敬请期待）
 
 ## 🚀 开始使用
 
@@ -112,23 +78,6 @@ order: 7
 事件详细描述...
 ```
 
-### 添加传记
-
-在 `src/content/biographies/` 目录下创建 Markdown 文件：
-
-```markdown
----
-title: "书名"
-author: "作者"
-cover: "/images/book-cover.jpg"  # 封面图片路径
-order: 1
----
-
-## 摘录
-
-书籍摘录内容...
-```
-
 ## 🎨 自定义主题
 
 主题颜色定义在 `src/styles/global.css` 的 CSS 变量中：
@@ -146,11 +95,9 @@ order: 1
 
 1. **首页**: 全屏展示海子形象，诗句装饰
 2. **诗歌总览**: 左侧标签筛选 + 右侧诗歌列表，支持搜索
-3. **诗歌详情**: 诗歌全文 + 标签信息
+3. **诗歌详情**: 诗歌全文 +目录导航
 4. **时间轴**: 交互式年份导航 + 生平详情
-5. **传记总览**: 卡片轮播展示
-6. **传记详情**: 书籍信息 + 摘录内容
-7. **AI对话**: 预留功能页面
+7. **CONTACT页面：** 联系页面+表单
 
 ## 🌐 部署
 
@@ -162,7 +109,7 @@ order: 1
 
 ## 📄 许可
 
-本项目仅用于学习和纪念目的。诗歌及传记内容版权归原作者所有。
+本项目仅用于学习和纪念目的。诗歌来源于网络，若有问题请联系我。
 
 ---
 
