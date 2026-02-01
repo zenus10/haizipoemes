@@ -1,0 +1,194 @@
+---
+interface Props {
+  currentPage?:
+    | "home"
+    | "poetry"
+    | "timeline"
+    | "contact";
+}
+
+const { currentPage = "home" } = Astro.props;
+
+const navItems = [
+  { name: "Home", href: "/", key: "home" }, // 首页
+  { name: "Poetry", href: "/poetry", key: "poetry" }, // 诗集页
+  { name: "Timeline", href: "/timeline", key: "timeline" }, // 时间线页
+{ name: "Contact", href: "/contact", key: "contact" }, // 联系页
+];
+---
+
+<!-- 导航栏主容器 -->
+<nav class="navbar">
+  <!-- 导航栏内容容器 - 限制最大宽度并居中 -->
+  <div class="navbar-container">
+    <!-- Logo/品牌名称 - 点击返回首页 -->
+    <a href="/" class="logo"> HaiZiPoemes </a>
+
+    <!-- 右侧容器：包含导航链接和装饰 -->
+    <div class="nav-right">
+      <!-- 导航链接列表 -->
+      <ul class="nav-links">
+        {
+          navItems.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class:list={["nav-link", { active: currentPage === item.key }]}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- 导航栏装饰元素 - 右侧圆形按钮 -->
+      <div class="nav-accent"></div>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* 导航栏主容器样式 */
+  .navbar {
+    position: fixed; /* 固定定位，始终显示在页面顶部 */
+    top: 0; /* 距离顶部 0px */
+    left: 0; /* 距离左侧 0px */
+    right: 0; /* 距离右侧 0px */
+    height: var(--navHeight); /* 导航栏高度（来自全局 CSS 变量） */
+    background: var(--colorBackground); /* 背景色（来自全局 CSS 变量） */
+    z-index: 1000; /* 层级，确保在其他内容之上 */
+    border-bottom: 1px solid transparent; /* 底部边框，默认透明 */
+    transition:
+      border-color var(--transitionNormal),
+      box-shadow var(--transitionNormal); /* 过渡动画 */
+  }
+
+  /* 导航栏滚动状态样式 - 当页面向下滚动时添加此类 */
+  .navbar.scrolled {
+    border-bottom-color: var(--colorBorderLight); /* 显示底部边框 */
+    box-shadow: var(--shadowSm); /* 添加阴影效果 */
+  }
+
+  /* 导航栏内容容器 */
+  .navbar-container {
+    max-width: 70rem; /* 最大宽度与内容区一致 */
+    margin: 0 auto; /* 水平居中 */
+    padding: 0 var(--spacingXl); /* 左右内边距 */
+    height: 100%; /* 高度填满父容器 */
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直居中对齐 */
+    justify-content: space-between; /* logo 左侧，导航链接和装饰一起在右侧 */
+  }
+
+  /* 右侧容器：包含导航链接和装饰 */
+  .nav-right {
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直居中 */
+    gap: var(--spacingXl); /* 导航链接与装饰之间的间距 */
+  }
+
+  /* Logo 样式 */
+  .logo {
+    font-family: var(--fontLogo); /* Logo 字体 */
+    font-size: 20px; /* 字体大小 */
+    font-weight: 700; /* 字重（粗体） */
+    color: var(--colorText); /* 文字颜色 */
+    letter-spacing: -0.02em; /* 字间距（稍微紧凑） */
+    transition: color var(--transitionFast); /* 颜色过渡动画 */
+  }
+
+  /* Logo 悬停效果 */
+  .logo:hover {
+    color: var(--colorPrimary); /* 悬停时变为主题色 */
+  }
+
+  /* 导航链接列表容器 */
+  .nav-links {
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直居中 */
+    gap: var(--spacingXl); /* 链接之间的间距 */
+  }
+
+  /* 单个导航链接样式 */
+  .nav-link {
+    font-size: var(--fontSizeBase); /* 字体大小 */
+    font-weight: 500; /* 字重（中等） */
+    color: var(--colorText); /* 文字颜色 */
+    position: relative; /* 相对定位 */
+    padding: var(--spacingSm) 0; /* 上下内边距 */
+    transition: color var(--transitionFast); /* 颜色过渡动画 */
+  }
+
+  /* 导航链接悬停和激活状态 */
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--colorPrimary); /* 文字变为主题色 */
+  }
+
+  /* 右侧装饰按钮容器 */
+  .nav-accent {
+    width: 48px; /* 宽度 */
+    height: 28px; /* 高度 */
+    background: var(--colorPrimary); /* 背景色 */
+    border-radius: var(--radiusFull); /* 圆角（完全圆形） */
+    display: flex; /* 使用 Flexbox 布局 */
+    align-items: center; /* 垂直居中 */
+    justify-content: center; /* 水平居中 */
+    cursor: pointer; /* 鼠标指针样式 */
+    transition: background-color var(--transitionFast); /* 背景色过渡动画 */
+  }
+
+  /* 装饰按钮悬停效果 */
+  .nav-accent:hover {
+    background: var(--colorPrimaryLight); /* 悬停时变为浅色主题色 */
+  }
+
+  /* 移动端响应式设计 - 平板设备 */
+  @media (max-width: 768px) {
+    .navbar-container {
+      padding: 0 var(--spacingMd); /* 减少左右内边距 */
+    }
+
+    .nav-links {
+      gap: var(--spacingMd); /* 减少链接间距 */
+    }
+
+    .nav-link {
+      font-size: var(--fontSizeSm); /* 减小字体大小 */
+    }
+  }
+
+  /* 移动端响应式设计 - 手机设备 */
+  @media (max-width: 640px) {
+    .nav-links {
+      display: none; /* 隐藏导航链接列表（可考虑实现移动菜单） */
+    }
+  }
+</style>
+
+<script>
+  // 滚动检测脚本 - 为导航栏添加滚动状态样式
+
+  // 获取导航栏元素
+  const navbar = document.querySelector(".navbar");
+
+  /**
+   * 滚动处理函数
+   * 当页面向下滚动超过 10px 时，为导航栏添加 'scrolled' 类
+   * 这会触发边框和阴影效果，使导航栏更明显
+   */
+  function handleScroll() {
+    if (window.scrollY > 10) {
+      navbar?.classList.add("scrolled"); // 滚动超过 10px，添加 scrolled 类
+    } else {
+      navbar?.classList.remove("scrolled"); // 回到顶部，移除 scrolled 类
+    }
+  }
+
+  // 监听滚动事件，{ passive: true } 可以提升滚动性能
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  // 页面加载时立即执行一次，确保初始状态正确
+  handleScroll();
+</script>

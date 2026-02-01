@@ -1,0 +1,178 @@
+---
+// Timeline Page - 时间轴页面
+// 左侧折叠诗页（虚拟滚动卡片）+ 右侧年份详情
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import '../../styles/pages/timeline.css';
+
+// 获取所有时间轴事件并按年份排序
+const timelineCollection = await getCollection('timeline');
+const timelineData = timelineCollection
+  .sort((a, b) => a.data.year - b.data.year)
+  .map(event => ({
+    year: event.data.year,
+    title: event.data.title,
+    content: event.body,
+    images: event.data.images,
+  }));
+
+const defaultIndex = Math.floor(timelineData.length / 2);
+---
+
+<BaseLayout title="时间轴" currentPage="timeline">
+  <div class="timeline-page">
+    <!-- 左侧卡片堆叠时间轴 -->
+    <aside class="timeline-nav" id="timelineNav">
+      <div class="card-stack" id="cardStack">
+        {timelineData.map((event, index) => (
+          <div
+            class="year-card"
+            data-index={index}
+          >
+            <div class="card-year">{event.year}</div>
+            <div class="card-title">{event.title}</div>
+          </div>
+        ))}
+      </div>
+
+      <!-- 移动端水平时间轴 -->
+      <div class="timeline-mobile">
+        {timelineData.map((event, index) => (
+          <button class="mobile-year-btn" data-index={index}>
+            {event.year}
+          </button>
+        ))}
+      </div>
+    </aside>
+
+    <!-- 右侧内容区域 -->
+    <main class="timeline-content">
+      <div class="content-wrapper" id="timelineContent">
+        {timelineData.map((event, index) => (
+          <article
+            class={`year-section ${index === defaultIndex ? 'active' : ''}`}
+            data-year={event.year}
+            data-index={index}
+          >
+            <h1 class="year-title">{event.year}</h1>
+            <div class="year-text">
+              {event.content.split('\n').map((para: string) => (
+                para.trim() && <p>{para}</p>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.year-card');
+    const yearSections = document.querySelectorAll('.year-section');
+    const timelineNav = document.getElementById('timelineNav');
+
+    const totalYears = cards.length;
+    let currentIndex = Math.floor(totalYears / 2);
+    let isScrolling = false;
+
+    // 虚拟滚动参数
+    const STEP = 52;           // 卡片中心间距 (px)
+    const VISIBLE_RANGE = 3;   // 可见范围 ±3
+    // 透明度曲线: [active, ±1, ±2, ±3]
+    const OPACITY = [1, 0.6, 0.32, 0.12];
+    // 缩放曲线
+    const SCALE  = [1, 0.97, 0.94, 0.91];
+
+    function setActiveYear(index: number) {
+      currentIndex = index;
+
+      cards.forEach((card, i) => {
+        const offset = i - index;
+        const absOffset = Math.abs(offset);
+        const el = card as HTMLElement;
+
+        el.classList.toggle('active', i === index);
+
+        if (absOffset <= VISIBLE_RANGE) {
+          const s = SCALE[absOffset];
+          const o = OPACITY[absOffset];
+          const y = offset * STEP;
+          el.style.transform = `translateY(${y}px) scale(${s})`;
+          el.style.opacity = String(o);
+          el.style.pointerEvents = 'auto';
+        } else {
+          // 超出可见范围：滑出并隐藏
+          const direction = offset > 0 ? 1 : -1;
+          const y = direction * (VISIBLE_RANGE + 1) * STEP;
+          el.style.transform = `translateY(${y}px) scale(0.88)`;
+          el.style.opacity = '0';
+          el.style.pointerEvents = 'none';
+        }
+      });
+
+      // 更新右侧内容
+      yearSections.forEach((section, i) => {
+        section.classList.remove('active');
+        if (i === index) section.classList.add('active');
+      });
+
+      // 移动端同步
+      document.querySelectorAll('.mobile-year-btn').forEach((btn, i) => {
+        btn.classList.remove('active', 'adjacent');
+        if (i === index) btn.classList.add('active');
+        else if (Math.abs(i - index) === 1) btn.classList.add('adjacent');
+      });
+    }
+
+    // 点击卡片切换
+    cards.forEach((card, index) => {
+      card.addEventListener('click', () => setActiveYear(index));
+    });
+
+    // 滚轮切换
+    timelineNav?.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (isScrolling) return;
+      isScrolling = true;
+
+      const delta = (e as WheelEvent).deltaY;
+      if (delta > 0 && currentIndex < totalYears - 1) currentIndex++;
+      else if (delta < 0 && currentIndex > 0) currentIndex--;
+
+      setActiveYear(currentIndex);
+      setTimeout(() => { isScrolling = false; }, 300);
+    }, { passive: false });
+
+    // 键盘上下箭头
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' && currentIndex < totalYears - 1) {
+        e.preventDefault();
+        setActiveYear(currentIndex + 1);
+      } else if (e.key === 'ArrowUp' && currentIndex > 0) {
+        e.preventDefault();
+        setActiveYear(currentIndex - 1);
+      }
+    });
+
+    // 移动端按钮点击
+    document.querySelectorAll('.mobile-year-btn').forEach((btn, index) => {
+      btn.addEventListener('click', () => setActiveYear(index));
+    });
+
+    // 初始化：先禁用 transition 防止入场动画
+    cards.forEach(card => {
+      (card as HTMLElement).style.transition = 'none';
+    });
+    setActiveYear(currentIndex);
+    // 强制回流后恢复 transition
+    void (cards[0] as HTMLElement).offsetHeight;
+    requestAnimationFrame(() => {
+      cards.forEach(card => {
+        (card as HTMLElement).style.transition = '';
+      });
+    });
+  });
+</script>

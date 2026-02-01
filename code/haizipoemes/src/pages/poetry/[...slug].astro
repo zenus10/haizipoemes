@@ -1,0 +1,242 @@
+---
+// Poetry Detail Page - 诗歌详情页
+// 左侧诗歌内容 + 右侧 TOC 导航侧边栏（仅有标题的长诗显示）
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { poemTypes } from '../../lib/filters';
+import '../../styles/pages/poetry-detail.css';
+
+export async function getStaticPaths() {
+  const poems = await getCollection('poems');
+  return poems.map(poem => ({
+    params: { slug: poem.slug },
+    props: { poem }
+  }));
+}
+
+const { poem } = Astro.props;
+const { Content, headings } = await poem.render();
+
+// 获取类型和年份的显示名称
+const typeLabel = poemTypes.find(t => t.key === poem.data.type)?.label || poem.data.type;
+const yearLabel = poem.data.year || '时间不详';
+
+const hasHeadings = headings.length > 0;
+---
+
+<BaseLayout title={poem.data.title} currentPage="poetry">
+  <!-- 返回栏（固定顶部） -->
+  <div class="back-bar">
+    <a href="/poetry" class="back-button">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      <span>返回</span>
+    </a>
+  </div>
+
+  <!-- 双栏内容：诗歌正文 + 目录侧边栏 -->
+  <div class="poem-content">
+    <article class="poem-article">
+      <h1 class="poem-title">{poem.data.title}</h1>
+      <div class="poem-meta">
+        {typeLabel && <span>{typeLabel}</span>}
+        <span>·</span>
+        <span>{yearLabel}</span>
+      </div>
+      <div class="poem-divider"></div>
+      <div class="poem-text prose">
+        <Content />
+      </div>
+    </article>
+
+    <!-- 右侧目录侧边栏（sticky 定位，始终占位） -->
+    <aside class="toc-sidebar">
+      {hasHeadings && (
+        <toc-nav data-headings={JSON.stringify(headings)}></toc-nav>
+      )}
+    </aside>
+  </div>
+
+</BaseLayout>
+
+<script>
+  // generateToc: 平铺 headings → 嵌套树结构
+  function generateToc(headings) {
+    const root = { children: [] };
+    const stack = [{ node: root, depth: 0 }];
+
+    for (const h of headings) {
+      const item = { slug: h.slug, text: h.text, depth: h.depth, children: [] };
+      while (stack.length > 1 && stack[stack.length - 1].depth >= h.depth) {
+        stack.pop();
+      }
+      stack[stack.length - 1].node.children.push(item);
+      stack.push({ node: item, depth: h.depth });
+    }
+
+    return root.children;
+  }
+
+  // renderToc: 递归生成嵌套列表 HTML
+  function renderToc(items) {
+    return items.map(item => {
+      const children = item.children.length
+        ? `<ul class="toc-sublist">${renderToc(item.children)}</ul>`
+        : '';
+      return `<li>
+        <a href="#${item.slug}" class="toc-link" data-slug="${item.slug}">${item.text}</a>
+        ${children}
+      </li>`;
+    }).join('');
+  }
+
+  // Web Component: <toc-nav>
+  class TocNav extends HTMLElement {
+    _headings = [];
+    _offsets = [];
+    _scrollContainer = null;
+    _pollTimer = null;
+
+    connectedCallback() {
+      const raw = this.getAttribute('data-headings');
+      if (!raw) return;
+
+      const flat = JSON.parse(raw);
+      const tree = generateToc(flat);
+
+      // 渲染 TOC
+      this.innerHTML = `
+        <nav class="toc-nav">
+          <h3 class="toc-title">目录</h3>
+          <ul class="toc-list">${renderToc(tree)}</ul>
+        </nav>
+      `;
+
+      // 查找滚动容器
+      this._scrollContainer = this._findScrollContainer();
+
+      // 缓存标题 DOM 元素
+      this._headings = flat
+        .map(h => ({ slug: h.slug, el: document.getElementById(h.slug) }))
+        .filter(h => h.el);
+
+      if (!this._headings.length || !this._scrollContainer) return;
+
+      // 初始化位置 + 100ms 轮询刷新
+      this._recalcOffsets();
+      this._pollTimer = setInterval(() => this._recalcOffsets(), 100);
+
+      // scroll 监听
+      this._scrollContainer.addEventListener('scroll', () => this._updateState(), { passive: true });
+      this._updateState();
+
+      // 点击定位
+      this.querySelectorAll('.toc-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const target = document.getElementById(link.dataset.slug);
+          if (target && this._scrollContainer) {
+            const barHeight = document.querySelector('.back-bar')?.offsetHeight || 0;
+            const top =
+              target.getBoundingClientRect().top -
+              this._scrollContainer.getBoundingClientRect().top +
+              this._scrollContainer.scrollTop -
+              barHeight;
+            this._scrollContainer.scrollTo({ top, behavior: 'smooth' });
+            history.pushState(null, '', `#${link.dataset.slug}`);
+          }
+        });
+      });
+    }
+
+    disconnectedCallback() {
+      clearInterval(this._pollTimer);
+    }
+
+    // 从 .poem-content 父级开始向上查找页面级滚动容器（跳过 .toc-sidebar）
+    _findScrollContainer() {
+      let el = this.closest('.poem-content');
+      if (el) el = el.parentElement;
+      while (el) {
+        const { overflowY } = getComputedStyle(el);
+        if (overflowY === 'auto' || overflowY === 'scroll') return el;
+        el = el.parentElement;
+      }
+      return document.documentElement;
+    }
+
+    // 重新计算所有标题的 offsetTop（相对于滚动容器）
+    _recalcOffsets() {
+      if (!this._scrollContainer) return;
+      const rect = this._scrollContainer.getBoundingClientRect();
+      const scrollTop = this._scrollContainer.scrollTop;
+
+      this._offsets = this._headings.map(h => ({
+        slug: h.slug,
+        top: h.el.getBoundingClientRect().top - rect.top + scrollTop,
+      }));
+    }
+
+    // 更新三态高亮 + 连续进度条
+    _updateState() {
+      if (!this._scrollContainer || !this._offsets.length) return;
+
+      const scrollTop = this._scrollContainer.scrollTop;
+      const viewH = this._scrollContainer.clientHeight;
+      const barHeight = document.querySelector('.back-bar')?.offsetHeight || 0;
+
+      // 找到当前激活的章节索引
+      let activeIdx = -1;
+      for (let i = 0; i < this._offsets.length; i++) {
+        if (this._offsets[i].top <= scrollTop + barHeight + 10) {
+          activeIdx = i;
+        }
+      }
+
+      // 计算激活章节内的阅读进度
+      let progress = 0;
+      if (activeIdx >= 0) {
+        const start = this._offsets[activeIdx].top;
+        const end = activeIdx < this._offsets.length - 1
+          ? this._offsets[activeIdx + 1].top
+          : start + viewH;
+        const len = end - start;
+        progress = len > 0 ? Math.min(1, Math.max(0, (scrollTop + barHeight - start) / len)) : 0;
+      }
+
+      // 更新每个链接的文字状态
+      this.querySelectorAll('.toc-link').forEach(link => {
+        const slug = link.dataset.slug;
+        const idx = this._offsets.findIndex(o => o.slug === slug);
+        if (idx < 0) return;
+
+        if (idx < activeIdx) {
+          link.dataset.state = 'past';
+        } else if (idx === activeIdx) {
+          link.dataset.state = 'active';
+        } else {
+          link.dataset.state = '';
+        }
+      });
+
+      // 更新连续进度条高度
+      const tocList = this.querySelector('.toc-list');
+      if (tocList && activeIdx >= 0) {
+        const activeSlug = this._offsets[activeIdx].slug;
+        const activeLink = this.querySelector(`.toc-link[data-slug="${activeSlug}"]`);
+        if (activeLink) {
+          const listRect = tocList.getBoundingClientRect();
+          const linkRect = activeLink.getBoundingClientRect();
+          const h = (linkRect.top - listRect.top) + linkRect.height * progress;
+          tocList.style.setProperty('--toc-bar-height', `${Math.max(0, h)}px`);
+        }
+      } else if (tocList) {
+        tocList.style.setProperty('--toc-bar-height', '0px');
+      }
+    }
+  }
+
+  customElements.define('toc-nav', TocNav);
+</script>

@@ -1,0 +1,9 @@
+{
+  "poemTypes": [
+    { "key": "short", "label": "短诗" },
+    { "key": "long", "label": "长诗" },
+    { "key": "sun", "label": "太阳·七部书" },
+    { "key": "essay", "label": "文论" }
+  ],
+  "poemYears": ["1983", "1984", "1985", "1986", "1987", "1988", "1989"]
+}

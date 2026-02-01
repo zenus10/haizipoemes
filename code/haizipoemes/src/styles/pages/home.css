@@ -1,0 +1,7 @@
+/* 首页样式 */
+body {
+  background: url(/images/haizi-hero.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
