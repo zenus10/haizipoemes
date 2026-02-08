@@ -1,0 +1,250 @@
+---
+// Poetry Detail Page - 诗歌详情页
+// 左侧诗歌内容 + 右侧标签
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { samplePoems, poemTypes, poemYears } from '../../content/data';
+
+export function getStaticPaths() {
+  return samplePoems.map(poem => ({
+    params: { id: poem.id },
+    props: { poem }
+  }));
+}
+
+const { poem } = Astro.props;
+
+// 获取类型和年份的显示名称
+const typeLabel = poemTypes.find(t => t.key === poem.type)?.label || poem.type;
+const yearLabel = poem.year || '时间不详';
+---
+
+<BaseLayout title={poem.title} currentPage="poetry">
+  <div class="poem-detail-page">
+    <!-- 左侧诗歌内容 -->
+    <main class="poem-content">
+      <!-- 返回按钮 -->
+      <a href="/poetry" class="back-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>返回</span>
+      </a>
+      
+      <article class="poem-article">
+        <h1 class="poem-title">{poem.title}</h1>
+        <div class="poem-divider"></div>
+        <div class="poem-text">
+          {poem.content.split('\n').map((line: string) => (
+            line.trim() ? <p>{line}</p> : <br />
+          ))}
+        </div>
+      </article>
+    </main>
+    
+    <!-- 右侧标签栏 -->
+    <aside class="poem-tags-sidebar">
+      <div class="tags-container">
+        <h3 class="tags-title">TAGS</h3>
+        <div class="tags-list">
+          {typeLabel && (
+            <span class="tag">
+              <span class="tag-dot"></span>
+              {typeLabel}
+            </span>
+          )}
+          <span class="tag">
+            <span class="tag-dot"></span>
+            {yearLabel}
+          </span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .poem-detail-page {
+    display: flex;
+    min-height: calc(100vh - var(--nav-height));
+  }
+
+  /* 左侧诗歌内容 */
+  .poem-content {
+    flex: 1;
+    padding: var(--spacing-2xl) var(--spacing-3xl);
+    max-width: 900px;
+  }
+
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--spacing-xl);
+    transition: color var(--transition-fast);
+  }
+
+  .back-button:hover {
+    color: var(--color-primary);
+  }
+
+  .poem-article {
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .poem-title {
+    font-family: var(--font-display);
+    font-size: var(--text-3xl);
+    font-weight: 600;
+    color: var(--color-text);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .poem-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-primary) 20%,
+      var(--color-primary) 80%,
+      transparent
+    );
+    opacity: 0.3;
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  .poem-text {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    line-height: 2;
+    color: var(--color-text);
+    text-align: left;
+  }
+
+  .poem-text p {
+    margin-bottom: 0;
+    text-indent: 0;
+  }
+
+  .poem-text br {
+    display: block;
+    content: '';
+    margin-bottom: var(--spacing-lg);
+  }
+
+  /* 右侧标签栏 */
+  .poem-tags-sidebar {
+    width: 320px;
+    min-width: 320px;
+    padding: var(--spacing-2xl);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: calc(var(--spacing-3xl) * 2);
+  }
+
+  .tags-container {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-xl);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-md);
+    background: var(--color-background);
+  }
+
+  .tags-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text);
+    letter-spacing: 0.05em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--color-background-alt);
+    border-radius: var(--radius-full);
+    font-size: var(--text-sm);
+    color: var(--color-text);
+  }
+
+  .tag-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--color-primary);
+    border-radius: 50%;
+  }
+
+  /* Animation */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .poem-content {
+      padding: var(--spacing-xl);
+    }
+
+    .poem-tags-sidebar {
+      width: 260px;
+      min-width: 260px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .poem-detail-page {
+      flex-direction: column;
+    }
+
+    .poem-content {
+      padding: var(--spacing-lg);
+    }
+
+    .poem-title {
+      font-size: var(--text-2xl);
+    }
+
+    .poem-text {
+      font-size: var(--text-base);
+    }
+
+    .poem-tags-sidebar {
+      width: 100%;
+      min-width: 100%;
+      padding: var(--spacing-lg);
+      padding-top: 0;
+    }
+
+    .tags-container {
+      width: 100%;
+      flex-direction: row;
+    }
+
+    .tags-title {
+      writing-mode: horizontal-tb;
+    }
+  }
+</style>

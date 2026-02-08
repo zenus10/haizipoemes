@@ -1,0 +1,354 @@
+/* ============================================
+   联系页面样式 - 卡片式现代布局
+   ============================================ */
+
+.contact-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  overflow: hidden;
+  background: var(--colorBackgroundAlt);
+  padding: var(--spacingXl);
+  animation: fadeIn 0.5s ease;
+}
+
+.contact-container {
+  display: flex;
+  gap: var(--spacingLg);
+  width: 100%;
+  max-width: 960px;
+  height: fit-content;
+  max-height: 100%;
+}
+
+/* ==========================================
+   卡片通用样式
+   ========================================== */
+
+.contact-card {
+  background: var(--colorBackground);
+  border-radius: var(--radiusXl);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 12px rgba(0, 0, 0, 0.03);
+  animation: fadeInUp 0.6s ease both;
+}
+
+/* ==========================================
+   左卡片 - 联系信息
+   ========================================== */
+
+.contact-info-card {
+  flex: 0 0 340px;
+  padding: var(--spacing2xl) var(--spacingXl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation-delay: 0.05s;
+}
+
+.contact-title {
+  font-family: var(--fontDisplay);
+  font-size: var(--fontSize2xl);
+  font-weight: 700;
+  color: var(--colorText);
+  margin-bottom: var(--spacingSm);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+.contact-subtitle {
+  font-size: var(--fontSizeSm);
+  color: var(--colorTextLight);
+  line-height: 1.7;
+  margin-bottom: var(--spacingXl);
+}
+
+/* 联系方式 */
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacingMd);
+}
+
+.contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacingMd);
+}
+
+.contact-icon {
+  flex-shrink: 0;
+  color: var(--colorPrimary);
+  margin-top: 2px;
+}
+
+.contact-item-label {
+  display: block;
+  font-size: var(--fontSizeXs);
+  color: var(--colorTextMuted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 2px;
+}
+
+.contact-item-value {
+  display: block;
+  font-size: var(--fontSizeSm);
+  color: var(--colorText);
+  line-height: 1.4;
+}
+
+a.contact-item-value:hover {
+  color: var(--colorPrimary);
+}
+
+/* 分隔线 */
+.contact-divider {
+  height: 1px;
+  background: var(--colorBorderLight);
+  margin: var(--spacingLg) 0;
+}
+
+/* 引用诗句 */
+.contact-quote {
+  margin: 0;
+}
+
+.contact-quote p {
+  font-family: var(--fontDisplay);
+  font-size: var(--fontSizeSm);
+  line-height: 1.8;
+  color: var(--colorTextLight);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.contact-quote cite {
+  font-style: normal;
+  font-size: var(--fontSizeXs);
+  color: var(--colorTextMuted);
+}
+
+/* ==========================================
+   右卡片 - 表单
+   ========================================== */
+
+.contact-form-card {
+  flex: 1;
+  padding: var(--spacingXl) var(--spacing2xl);
+  display: flex;
+  align-items: center;
+  animation-delay: 0.15s;
+}
+
+.contact-form {
+  width: 100%;
+}
+
+.form-heading {
+  font-family: var(--fontDisplay);
+  font-size: var(--fontSizeXl);
+  font-weight: 600;
+  color: var(--colorText);
+  margin-bottom: var(--spacingLg);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacingMd);
+}
+
+.form-group {
+  margin-bottom: var(--spacingMd);
+}
+
+.form-label {
+  display: block;
+  font-size: var(--fontSizeXs);
+  font-weight: 500;
+  color: var(--colorTextLight);
+  margin-bottom: var(--spacingXs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.required {
+  color: var(--colorPrimary);
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px var(--spacingMd);
+  border: 1px solid var(--colorBorder);
+  border-radius: var(--radiusMd);
+  background: var(--colorBackground);
+  font-family: inherit;
+  font-size: var(--fontSizeSm);
+  color: var(--colorText);
+  transition: all var(--transitionFast);
+  outline: none;
+}
+
+.form-input:hover {
+  border-color: var(--colorTextMuted);
+}
+
+.form-input:focus {
+  border-color: var(--colorPrimary);
+  box-shadow: 0 0 0 3px rgba(96, 0, 0, 0.06);
+}
+
+.form-input::placeholder {
+  color: var(--colorTextMuted);
+}
+
+.form-textarea {
+  resize: none;
+  min-height: 90px;
+  line-height: 1.6;
+}
+
+/* Submit Button */
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacingSm);
+  padding: 10px var(--spacingXl);
+  background: var(--colorPrimary);
+  color: white;
+  border: none;
+  border-radius: var(--radiusMd);
+  font-family: inherit;
+  font-size: var(--fontSizeSm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transitionFast);
+  min-width: 130px;
+  margin-top: var(--spacingXs);
+}
+
+.form-submit:hover:not(:disabled) {
+  background: var(--colorPrimaryLight);
+  transform: translateY(-1px);
+  box-shadow: var(--shadowMd);
+}
+
+.form-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.form-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.submit-loading {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacingSm);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Form Messages */
+.form-message {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingSm);
+  padding: var(--spacingSm) var(--spacingMd);
+  border-radius: var(--radiusMd);
+  font-size: var(--fontSizeSm);
+  margin-top: var(--spacingMd);
+  animation: fadeIn 0.3s ease;
+}
+
+.form-success {
+  background: rgba(34, 139, 34, 0.08);
+  color: #228B22;
+  border: 1px solid rgba(34, 139, 34, 0.2);
+}
+
+.form-error {
+  background: rgba(96, 0, 0, 0.06);
+  color: var(--colorPrimary);
+  border: 1px solid rgba(96, 0, 0, 0.15);
+}
+
+/* ==========================================
+   Animations
+   ========================================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ==========================================
+   Responsive
+   ========================================== */
+
+@media (max-width: 800px) {
+  .contact-page {
+    padding: var(--spacingMd);
+    overflow-y: auto;
+  }
+
+  .contact-container {
+    flex-direction: column;
+    max-height: none;
+  }
+
+  .contact-info-card {
+    flex: none;
+    padding: var(--spacingXl) var(--spacingLg);
+  }
+
+  .contact-form-card {
+    padding: var(--spacingXl) var(--spacingLg);
+  }
+
+  .contact-title {
+    font-size: var(--fontSizeXl);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-page {
+    padding: var(--spacingSm);
+  }
+
+  .contact-info-card,
+  .contact-form-card {
+    padding: var(--spacingLg) var(--spacingMd);
+    border-radius: var(--radiusLg);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .form-submit {
+    width: 100%;
+  }
+}
