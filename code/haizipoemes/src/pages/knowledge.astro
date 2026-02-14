@@ -1,0 +1,184 @@
+---
+// Knowledge Page - 知识页面
+// 左侧导航栏 + 右侧单列卡片展示（网友 & 收集）
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import '../styles/pages/knowledge.css';
+
+const PREVIEW_THRESHOLD = 200;
+
+// 获取所有网友内容和收集内容
+const aboutCollection = await getCollection('about');
+const essaysCollection = await getCollection('essays');
+
+// 按 order 排序并渲染 Markdown
+const renderedAbout = await Promise.all(
+  aboutCollection
+    .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+    .map(async (item) => {
+      const { Content } = await item.render();
+      const needsExpand = item.body.length > PREVIEW_THRESHOLD;
+      return {
+        id: item.slug,
+        author: item.data.author,
+        preview: needsExpand
+          ? item.body.substring(0, PREVIEW_THRESHOLD).replace(/\n+/g, ' ').trim() + '...'
+          : null,
+        Content,
+        needsExpand,
+      };
+    })
+);
+
+const renderedEssays = await Promise.all(
+  essaysCollection
+    .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+    .map(async (item) => {
+      const { Content } = await item.render();
+      return {
+        id: item.slug,
+        author: item.data.author,
+        preview: item.data.preview || item.body.substring(0, PREVIEW_THRESHOLD).replace(/\n+/g, ' ').trim() + '...',
+        Content,
+        needsExpand: true,
+      };
+    })
+);
+---
+
+<BaseLayout title="知识" description="探索海子的世界 - 网友与收集分享" currentPage="knowledge" fullWidth>
+  <div class="knowledge-page">
+    <!-- 左侧导航栏 -->
+    <aside class="filter-sidebar">
+      <div class="filter-header">
+        <span class="filter-title">分类</span>
+      </div>
+      <div class="filter-section">
+        <div class="filter-group">
+          <div class="filter-options">
+            <button class="filter-option active" data-category="about">
+              <span class="option-label">网友</span>
+              <span class="option-count">{renderedAbout.length}</span>
+            </button>
+            <button class="filter-option" data-category="essays">
+              <span class="option-label">收集</span>
+              <span class="option-count">{renderedEssays.length}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 右侧内容区 -->
+    <main class="knowledge-main">
+      <!-- 网友卡片 -->
+      <div class="knowledge-cards" id="aboutCards">
+        {renderedAbout.map((item) => (
+          <article class={`knowledge-card ${item.needsExpand ? '' : 'no-expand'}`} data-id={item.id}>
+            {item.needsExpand && (
+              <div class="card-preview">
+                <p class="card-text">{item.preview}</p>
+              </div>
+            )}
+            <div class={`card-full ${item.needsExpand ? '' : 'always-visible'}`}>
+              <div class="card-rendered prose">
+                <item.Content />
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="card-meta">
+                <span class="card-author">{item.author}</span>
+              </div>
+              {item.needsExpand && (
+                <button class="card-toggle" aria-label="展开">
+                  <span class="toggle-text">展开</span>
+                  <svg class="toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- 收集卡片 -->
+      <div class="knowledge-cards hidden" id="essayCards">
+        {renderedEssays.map((item) => (
+          <article class="knowledge-card" data-id={item.id}>
+            <div class="card-preview">
+              <p class="card-text">{item.preview}</p>
+            </div>
+            <div class="card-full">
+              <div class="card-rendered prose">
+                <item.Content />
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="card-meta">
+                <span class="card-author">{item.author}</span>
+              </div>
+              <button class="card-toggle" aria-label="展开">
+                <span class="toggle-text">展开</span>
+                <svg class="toggle-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9" />
+                </svg>
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- 空状态 -->
+      <div class="knowledge-empty hidden" id="emptyState">
+        暂无内容
+      </div>
+    </main>
+  </div>
+</BaseLayout>
+
+<script>
+  function init() {
+    const aboutCards = document.getElementById('aboutCards') as HTMLDivElement;
+    const essayCards = document.getElementById('essayCards') as HTMLDivElement;
+    const filterOptions = document.querySelectorAll('.filter-option');
+
+    // 分类切换
+    filterOptions.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const category = btn.getAttribute('data-category');
+        filterOptions.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        if (category === 'about') {
+          aboutCards.classList.remove('hidden');
+          essayCards.classList.add('hidden');
+        } else {
+          aboutCards.classList.add('hidden');
+          essayCards.classList.remove('hidden');
+        }
+      });
+    });
+
+    // 展开/收起
+    document.querySelectorAll('.card-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.knowledge-card') as HTMLElement;
+        if (!card) return;
+
+        const isExpanded = card.classList.toggle('expanded');
+        const toggleText = btn.querySelector('.toggle-text') as HTMLSpanElement;
+        if (toggleText) {
+          toggleText.textContent = isExpanded ? '收起' : '展开';
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

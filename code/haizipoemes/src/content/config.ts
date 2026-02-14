@@ -23,7 +23,32 @@ const timelineCollection = defineCollection({
   }),
 });
 
+// 冷知识集合
+const aboutCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    author: z.string().default('海子诗歌网'),
+    date: z.date().optional(),
+    order: z.number().optional(),
+  }),
+});
+
+// 随笔集合
+const essaysCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    author: z.string().default('海子诗歌网'),
+    date: z.date().optional(),
+    preview: z.string().optional(), // 预览文本
+    order: z.number().optional(),
+  }),
+});
+
 export const collections = {
   poems: poemsCollection,
   timeline: timelineCollection,
+  about: aboutCollection,
+  essays: essaysCollection,
 };

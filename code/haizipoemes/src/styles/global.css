@@ -67,6 +67,15 @@
   --containerMax: 1440px;
   --sidebarWidth: 320px;
 
+  /* 语义化颜色变量 */
+  --colorPrimaryAlpha4: rgba(96, 0, 0, 0.04);
+  --colorPrimaryAlpha5: rgba(96, 0, 0, 0.05);
+  --colorPrimaryAlpha6: rgba(96, 0, 0, 0.06);
+  --colorShadow1: rgba(0, 0, 0, 0.04);
+  --colorShadow2: rgba(0, 0, 0, 0.06);
+  --colorShadow3: rgba(0, 0, 0, 0.08);
+  --colorShadow4: rgba(0, 0, 0, 0.1);
+
   /* UnoCSS Prose 排版颜色映射 */
   --un-prose-body: var(--colorText);
   --un-prose-headings: var(--colorText);

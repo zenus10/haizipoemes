@@ -127,7 +127,7 @@
 }
 
 .filter-option:has(input:checked) {
-  background-color: rgba(96, 0, 0, 0.04);
+  background-color: var(--colorPrimaryAlpha4);
 }
 
 .filter-option input {
@@ -210,13 +210,13 @@
   background: var(--colorBackground);
   border-radius: var(--radiusFull);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px var(--colorShadow3), 0 1px 3px var(--colorShadow1);
   transition: box-shadow var(--transitionNormal);
 }
 
 .search-bar:hover,
 .search-bar:focus-within {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 16px var(--colorShadow4), 0 2px 6px var(--colorShadow2);
 }
 
 .search-input-wrapper {
@@ -268,7 +268,7 @@
 }
 
 .search-button:hover {
-  background: rgba(96, 0, 0, 0.06);
+  background: var(--colorPrimaryAlpha6);
 }
 
 .poem-count {

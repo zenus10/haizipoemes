@@ -17,7 +17,14 @@
       "Bash(find:*)",
       "Bash(node:*)",
       "Bash(npm run build:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(git checkout:*)",
+      "Bash(npx astro:*)",
+      "Bash(del \"d:\\\\ENTER\\\\海子网站\\\\code\\\\haizipoemes\\\\scripts\\\\create-about.mjs\")",
+      "WebFetch(domain:haizipoemes.netlify.app)"
     ]
   }
 }

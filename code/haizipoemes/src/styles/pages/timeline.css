@@ -72,7 +72,7 @@
 }
 
 .year-card:hover {
-  background: rgba(0, 0, 0, 0.03);
+  background: var(--colorBackgroundHover);
 }
 
 /* 年份文字 */
@@ -103,10 +103,10 @@
 
 /* ---- Active 卡片 ---- */
 .year-card.active {
-  background: rgba(96, 0, 0, 0.05);
+  background: var(--colorPrimaryAlpha5);
   box-shadow:
-    0 1px 3px rgba(0, 0, 0, 0.06),
-    0 4px 12px rgba(0, 0, 0, 0.04);
+    0 1px 3px var(--colorShadow2),
+    0 4px 12px var(--colorShadow1);
 }
 
 .year-card.active .card-year {
@@ -130,7 +130,7 @@
   flex: 1;
   padding: var(--spacingXl) var(--spacing3xl) var(--spacing3xl);
   overflow-y: auto;
-  background: #f9f9f9;
+  background: var(--colorBackgroundAlt);
   border-radius: 20px;
   margin: 24px 24px 24px 0;
 }
@@ -242,7 +242,7 @@
 
   .mobile-year-btn.active {
     color: var(--colorPrimary);
-    background: rgba(96, 0, 0, 0.06);
+    background: var(--colorPrimaryAlpha6);
     opacity: 1;
     font-weight: 700;
   }

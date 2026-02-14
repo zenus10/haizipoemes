@@ -1,4 +1,4 @@
-<!DOCTYPE html><link rel="stylesheet" href="/_astro/_id_.kLFFSAer.css"><h1 id="诗歌总览页---poetry-index-page">诗歌总览页 - Poetry Index Page</h1>
+<!DOCTYPE html><meta charset="utf-8"><link rel="stylesheet" href="/_astro/contact.B8NmtdvH.css"><h1 id="诗歌总览页---poetry-index-page">诗歌总览页 - Poetry Index Page</h1>
 <h2 id="页面概述">页面概述</h2>
 <p>诗歌总览页是海子诗歌网站的核心页面之一，提供诗歌浏览、筛选和搜索功能。</p>
 <p><strong>访问路径</strong>：<code>/poetry</code></p>
@@ -26,8 +26,7 @@
 <span class="line"><span>│   ☑ 1989     │                               │</span></span>
 <span class="line"><span>│   □ 1988     │                               │</span></span>
 <span class="line"><span>│              │                               │</span></span>
-<span class="line"><span>└──────────────┴──────────────────────────────┘</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>└──────────────┴──────────────────────────────┘</span></span></code></pre>
 <hr>
 <h2 id="文件组成">文件组成</h2>
 <h3 id="核心文件">核心文件</h3>
@@ -72,8 +71,7 @@
 <span class="line"><span>  ├─ import BaseLayout from '../../layouts/BaseLayout.astro'</span></span>
 <span class="line"><span>  ├─ import { samplePoems, poemTypes, poemYears } from '../../content/data'</span></span>
 <span class="line"><span>  └─ import '../../styles/pages/poetry-index.css'</span></span>
-<span class="line"><span>       └─ 使用 var(--colorPrimary) 等全局CSS变量</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>       └─ 使用 var(--colorPrimary) 等全局CSS变量</span></span></code></pre>
 <hr>
 <h2 id="功能详解">功能详解</h2>
 <h3 id="1-筛选功能">1. 筛选功能</h3>
@@ -84,8 +82,7 @@
 <span class="line"><span style="color:#E1E4E8">  { key: </span><span style="color:#9ECBFF">'long'</span><span style="color:#E1E4E8">, label: </span><span style="color:#9ECBFF">'长诗'</span><span style="color:#E1E4E8"> },</span></span>
 <span class="line"><span style="color:#E1E4E8">  { key: </span><span style="color:#9ECBFF">'sun'</span><span style="color:#E1E4E8">, label: </span><span style="color:#9ECBFF">'太阳·七部书'</span><span style="color:#E1E4E8"> },</span></span>
 <span class="line"><span style="color:#E1E4E8">  { key: </span><span style="color:#9ECBFF">'essay'</span><span style="color:#E1E4E8">, label: </span><span style="color:#9ECBFF">'文论'</span><span style="color:#E1E4E8"> },</span></span>
-<span class="line"><span style="color:#E1E4E8">];</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
 <p><strong>筛选逻辑</strong>：</p>
 <ul>
 <li>多选支持：可同时选择多个类型</li>
@@ -96,8 +93,7 @@
 <p><strong>年份范围</strong>：1983-1989（海子创作时期）</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> poemYears</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
 <span class="line"><span style="color:#9ECBFF">  '1983'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1984'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1985'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1986'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1987'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1988'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1989'</span></span>
-<span class="line"><span style="color:#E1E4E8">];</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
 <p><strong>筛选特点</strong>：</p>
 <ul>
 <li>覆盖完整创作时期</li>
@@ -114,8 +110,7 @@
 <span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"filter-options"</span><span style="color:#B392F0"> data-group-content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"type"</span><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#6A737D">    &#x3C;!-- 筛选选项 --></span></span>
 <span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
-<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span></code></pre>
 <p><strong>交互行为</strong>：</p>
 <ul>
 <li>点击标题展开/收起</li>
@@ -137,8 +132,7 @@
 <span class="line"><span style="color:#E1E4E8">  });</span></span>
 <span class="line"><span style="color:#E1E4E8">  searchInput.value </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> ''</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#B392F0">  filterPoems</span><span style="color:#E1E4E8">();</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <hr>
 <h3 id="2-搜索功能">2. 搜索功能</h3>
 <h4 id="21-实时搜索">2.1 实时搜索</h4>
@@ -160,8 +154,7 @@
 <span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> matchesSearch</span><span style="color:#F97583"> =</span><span style="color:#F97583"> !</span><span style="color:#E1E4E8">searchTerm </span><span style="color:#F97583">||</span><span style="color:#E1E4E8"> title.</span><span style="color:#B392F0">includes</span><span style="color:#E1E4E8">(searchTerm);</span></span>
 <span class="line"><span style="color:#6A737D">    // ...</span></span>
 <span class="line"><span style="color:#E1E4E8">  });</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h4 id="22-粘性搜索栏">2.2 粘性搜索栏</h4>
 <p><strong>CSS实现</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.search-bar</span><span style="color:#E1E4E8"> {</span></span>
@@ -169,8 +162,7 @@
 <span class="line"><span style="color:#79B8FF">  top</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--navHeight</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">/* 70px */</span></span>
 <span class="line"><span style="color:#79B8FF">  z-index</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">10</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#79B8FF">  background</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--colorBackground</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p><strong>效果</strong>：</p>
 <ul>
 <li>滚动时搜索栏保持在导航栏下方</li>
@@ -181,16 +173,15 @@
 <h4 id="31-诗歌列表项">3.1 诗歌列表项</h4>
 <p><strong>HTML结构</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="astro"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">a</span></span>
-<span class="line"><span style="color:#B392F0">  href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">`/</span><span style="color:#B392F0">poetry</span><span style="color:#E1E4E8">/</span><span style="color:#B392F0">$</span><span style="color:#E1E4E8">{</span><span style="color:#B392F0">poem.id</span><span style="color:#E1E4E8">}`}</span></span>
+<span class="line"><span style="color:#B392F0">  href</span><span style="color:#E1E4E8">={</span><span style="color:#9ECBFF">`/poetry/${</span><span style="color:#E1E4E8">poem</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">}</span></span>
 <span class="line"><span style="color:#B392F0">  class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"poem-item"</span></span>
-<span class="line"><span style="color:#B392F0">  data-type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{poem.type}</span></span>
-<span class="line"><span style="color:#B392F0">  data-year</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{poem.year}</span></span>
-<span class="line"><span style="color:#B392F0">  data-title</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{poem.title}</span></span>
+<span class="line"><span style="color:#B392F0">  data-type</span><span style="color:#E1E4E8">={poem.type}</span></span>
+<span class="line"><span style="color:#B392F0">  data-year</span><span style="color:#E1E4E8">={poem.year}</span></span>
+<span class="line"><span style="color:#B392F0">  data-title</span><span style="color:#E1E4E8">={poem.title}</span></span>
 <span class="line"><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"poem-dot"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
-<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"poem-title"</span><span style="color:#E1E4E8">>{poem.title}&#x3C;/span></span></span>
-<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">a</span><span style="color:#E1E4E8">></span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"poem-title"</span><span style="color:#E1E4E8">>{poem.title}&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">a</span><span style="color:#E1E4E8">></span></span></code></pre>
 <p><strong>设计元素</strong>：</p>
 <ul>
 <li>红色装饰圆点（8px）</li>
@@ -236,8 +227,7 @@
 <p><strong>目标页面</strong>：<code>/poetry/[id]</code>（诗歌详情页）</p>
 <p><strong>路由示例</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>/poetry/facing-the-sea    → 《面朝大海，春暖花开》</span></span>
-<span class="line"><span>/poetry/haizi-diary       → 《海子小夜曲》</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>/poetry/haizi-diary       → 《海子小夜曲》</span></span></code></pre>
 <hr>
 <h2 id="数据结构">数据结构</h2>
 <h3 id="poem接口">Poem接口</h3>
@@ -248,8 +238,7 @@
 <span class="line"><span style="color:#FFAB70">  type</span><span style="color:#F97583">?:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;        </span><span style="color:#6A737D">// 类型: 'short' | 'long' | 'sun' | 'essay'</span></span>
 <span class="line"><span style="color:#FFAB70">  year</span><span style="color:#F97583">?:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">;        </span><span style="color:#6A737D">// 年份: '1983'-'1989'</span></span>
 <span class="line"><span style="color:#FFAB70">  tags</span><span style="color:#F97583">:</span><span style="color:#79B8FF"> string</span><span style="color:#E1E4E8">[];       </span><span style="color:#6A737D">// 标签数组（暂未使用）</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h3 id="示例数据">示例数据</h3>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
 <span class="line"><span style="color:#B392F0">  id</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'facing-the-sea'</span><span style="color:#E1E4E8">,</span></span>
@@ -261,8 +250,7 @@
 <span class="line"><span style="color:#B392F0">  type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'short'</span><span style="color:#E1E4E8">,</span></span>
 <span class="line"><span style="color:#B392F0">  year</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'1989'</span><span style="color:#E1E4E8">,</span></span>
 <span class="line"><span style="color:#B392F0">  tags</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">'短诗'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1989'</span><span style="color:#E1E4E8">]</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <hr>
 <h2 id="样式系统">样式系统</h2>
 <h3 id="css变量来自globalcss">CSS变量（来自global.css）</h3>
@@ -272,28 +260,23 @@
 <span class="line"><span style="color:#E1E4E8">--colorText: </span><span style="color:#FDAEB7;font-style:italic">#1a1a1a</span><span style="color:#E1E4E8">;                 </span><span style="color:#6A737D">/* 正文文字 */</span></span>
 <span class="line"><span style="color:#E1E4E8">--colorTextLight: </span><span style="color:#FDAEB7;font-style:italic">#666666</span><span style="color:#E1E4E8">;            </span><span style="color:#6A737D">/* 次要文字 */</span></span>
 <span class="line"><span style="color:#E1E4E8">--colorBackground: </span><span style="color:#FDAEB7;font-style:italic">#ffffff;</span><span style="color:#6A737D">           /* 背景白色 */</span></span>
-<span class="line"><span style="color:#E1E4E8">--colorBorder: </span><span style="color:#FDAEB7;font-style:italic">#e5e5e5;</span><span style="color:#6A737D">               /* 边框灰色 */</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">--colorBorder: </span><span style="color:#FDAEB7;font-style:italic">#e5e5e5;</span><span style="color:#6A737D">               /* 边框灰色 */</span></span></code></pre>
 <p><strong>字体</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">--fontDisplay: 'SimSun', 'Songti SC', serif;              </span><span style="color:#6A737D">/* 宋体（标题） */</span></span>
 <span class="line"><span style="color:#E1E4E8">--fontBody: 'Satoshi', 'SimSun', 'Songti SC', </span><span style="color:#85E89D">sans-serif</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">/* Satoshi（正文） */</span></span>
 <span class="line"><span style="color:#E1E4E8">--fontSizeBase: 1rem;                                      </span><span style="color:#6A737D">/* 16px */</span></span>
-<span class="line"><span style="color:#E1E4E8">--fontSizeSm: 0.875rem;                                    </span><span style="color:#6A737D">/* 14px */</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">--fontSizeSm: 0.875rem;                                    </span><span style="color:#6A737D">/* 14px */</span></span></code></pre>
 <p><strong>间距</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">--spacingMd: 1rem;                    </span><span style="color:#6A737D">/* 16px */</span></span>
 <span class="line"><span style="color:#E1E4E8">--spacingLg: 1.5rem;                  </span><span style="color:#6A737D">/* 24px */</span></span>
 <span class="line"><span style="color:#E1E4E8">--spacingXl: 2rem;                    </span><span style="color:#6A737D">/* 32px */</span></span>
-<span class="line"><span style="color:#E1E4E8">--spacing2xl: 3rem;                   </span><span style="color:#6A737D">/* 48px */</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">--spacing2xl: 3rem;                   </span><span style="color:#6A737D">/* 48px */</span></span></code></pre>
 <p><strong>布局</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">--navHeight: 70px;                    </span><span style="color:#6A737D">/* 导航栏高度 */</span></span>
-<span class="line"><span style="color:#E1E4E8">--sidebarWidth: 320px;                </span><span style="color:#6A737D">/* 侧边栏宽度 */</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">--sidebarWidth: 320px;                </span><span style="color:#6A737D">/* 侧边栏宽度 */</span></span></code></pre>
 <p><strong>动画</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#E1E4E8">--transitionFast: 150ms ease;         </span><span style="color:#6A737D">/* 快速过渡 */</span></span>
-<span class="line"><span style="color:#E1E4E8">--transitionNormal: 250ms ease;       </span><span style="color:#6A737D">/* 标准过渡 */</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">--transitionNormal: 250ms ease;       </span><span style="color:#6A737D">/* 标准过渡 */</span></span></code></pre>
 <h3 id="布局方式">布局方式</h3>
 <p><strong>两列Flexbox布局</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.poetry-page</span><span style="color:#E1E4E8"> {</span></span>
@@ -308,8 +291,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#B392F0">.poetry-main</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#79B8FF">  flex</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;                            </span><span style="color:#6A737D">/* 占据剩余空间 */</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h3 id="自定义复选框">自定义复选框</h3>
 <p><strong>实现原理</strong>：</p>
 <ol>
@@ -346,8 +328,7 @@
 <span class="line"><span style="color:#79B8FF">  border</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">solid</span><span style="color:#79B8FF"> white</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#79B8FF">  border-width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">0</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> 2</span><span style="color:#F97583">px</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#79B8FF">  transform</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">rotate</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">45</span><span style="color:#F97583">deg</span><span style="color:#E1E4E8">) </span><span style="color:#79B8FF">translateY</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">-1</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <hr>
 <h2 id="交互逻辑">交互逻辑</h2>
 <h3 id="核心过滤函数">核心过滤函数</h3>
@@ -384,8 +365,7 @@
 <span class="line"><span style="color:#E1E4E8">      poem.classList.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hidden'</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">    }</span></span>
 <span class="line"><span style="color:#E1E4E8">  });</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p><strong>过滤逻辑</strong>：</p>
 <ul>
 <li><strong>搜索匹配</strong>：标题包含关键词（空则不过滤）</li>
@@ -417,8 +397,7 @@
 <span class="line"><span style="color:#E1E4E8">    toggle.classList.</span><span style="color:#B392F0">toggle</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'collapsed'</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">    content?.classList.</span><span style="color:#B392F0">toggle</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hidden'</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">  });</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <h3 id="数据流向图">数据流向图</h3>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>用户操作</span></span>
 <span class="line"><span>  ↓</span></span>
@@ -450,8 +429,7 @@
 <span class="line"><span>       ↓                           ↓</span></span>
 <span class="line"><span> 移除 .hidden 类              添加 .hidden 类</span></span>
 <span class="line"><span>       ↓                           ↓</span></span>
-<span class="line"><span>   诗歌项显示                   诗歌项隐藏</span></span>
-<span class="line"><span></span></span></code></pre>
+<span class="line"><span>   诗歌项显示                   诗歌项隐藏</span></span></code></pre>
 <hr>
 <h2 id="响应式设计">响应式设计</h2>
 <h3 id="断点定义">断点定义</h3>
@@ -497,8 +475,7 @@
 <span class="line"><span style="color:#B392F0">.poetry-main</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#79B8FF">  flex</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#79B8FF">  padding</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">48</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h3 id="平板布局">平板布局</h3>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#F97583">@media</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">max-width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1024</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">) {</span></span>
 <span class="line"><span style="color:#B392F0">  .filter-sidebar</span><span style="color:#E1E4E8"> {</span></span>
@@ -506,8 +483,7 @@
 <span class="line"><span style="color:#79B8FF">    min-width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">260</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#79B8FF">    padding</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">24</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;                    </span><span style="color:#6A737D">/* 减小内边距 */</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h3 id="手机布局">手机布局</h3>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#F97583">@media</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">max-width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">768</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">) {</span></span>
 <span class="line"><span style="color:#B392F0">  .poetry-page</span><span style="color:#E1E4E8"> {</span></span>
@@ -535,8 +511,7 @@
 <span class="line"><span style="color:#B392F0">  .search-button</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#79B8FF">    width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">100</span><span style="color:#F97583">%</span><span style="color:#E1E4E8">;                      </span><span style="color:#6A737D">/* 按钮全宽 */</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <hr>
 <h2 id="使用指南">使用指南</h2>
 <h3 id="如何添加新诗歌">如何添加新诗歌</h3>
@@ -554,8 +529,7 @@
 <span class="line"><span style="color:#E1E4E8">    year: </span><span style="color:#9ECBFF">'1989'</span><span style="color:#E1E4E8">,                   </span><span style="color:#6A737D">// 1983-1989</span></span>
 <span class="line"><span style="color:#E1E4E8">    tags: [</span><span style="color:#9ECBFF">'短诗'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1989'</span><span style="color:#E1E4E8">]</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">];</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
 <h4 id="步骤2创建详情页自动生成">步骤2：创建详情页（自动生成）</h4>
 <p>由于使用了<code>getStaticPaths()</code>，添加数据后Astro会自动生成对应的详情页路由。</p>
 <h4 id="步骤3验证">步骤3：验证</h4>
@@ -573,30 +547,26 @@
 <span class="line"><span style="color:#E1E4E8">  { key: </span><span style="color:#9ECBFF">'sun'</span><span style="color:#E1E4E8">, label: </span><span style="color:#9ECBFF">'太阳·七部书'</span><span style="color:#E1E4E8"> },</span></span>
 <span class="line"><span style="color:#E1E4E8">  { key: </span><span style="color:#9ECBFF">'essay'</span><span style="color:#E1E4E8">, label: </span><span style="color:#9ECBFF">'文论'</span><span style="color:#E1E4E8"> },</span></span>
 <span class="line"><span style="color:#E1E4E8">  { key: </span><span style="color:#9ECBFF">'new-type'</span><span style="color:#E1E4E8">, label: </span><span style="color:#9ECBFF">'新类型'</span><span style="color:#E1E4E8"> },  </span><span style="color:#6A737D">// ← 添加新类型</span></span>
-<span class="line"><span style="color:#E1E4E8">];</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
 <p>无需修改页面代码，筛选选项会自动生成。</p>
 <h4 id="添加新的年份">添加新的年份</h4>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#6A737D">// src/content/data.ts</span></span>
 <span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> poemYears</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span></span>
 <span class="line"><span style="color:#9ECBFF">  '1983'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1984'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1985'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1986'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1987'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1988'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'1989'</span><span style="color:#E1E4E8">,</span></span>
 <span class="line"><span style="color:#9ECBFF">  '1990'</span><span style="color:#6A737D">  // ← 添加新年份</span></span>
-<span class="line"><span style="color:#E1E4E8">];</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">];</span></span></code></pre>
 <h3 id="如何自定义样式">如何自定义样式</h3>
 <h4 id="修改主题色">修改主题色</h4>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* src/styles/global.css */</span></span>
 <span class="line"><span style="color:#B392F0">:root</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#FFAB70">  --colorPrimary</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">#600000</span><span style="color:#E1E4E8">;          </span><span style="color:#6A737D">/* 改为其他颜色 */</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p>所有使用<code>var(--colorPrimary)</code>的地方会自动更新。</p>
 <h4 id="修改侧边栏宽度">修改侧边栏宽度</h4>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* src/styles/global.css */</span></span>
 <span class="line"><span style="color:#B392F0">:root</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#FFAB70">  --sidebarWidth</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">320</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;            </span><span style="color:#6A737D">/* 改为其他宽度，如280px */</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h4 id="修改列表项样式">修改列表项样式</h4>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#6A737D">/* src/styles/pages/poetry-index.css */</span></span>
 <span class="line"><span style="color:#B392F0">.poem-item</span><span style="color:#E1E4E8"> {</span></span>
@@ -611,8 +581,7 @@
 <span class="line"><span style="color:#79B8FF">  width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">8</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;                       </span><span style="color:#6A737D">/* 改变圆点大小 */</span></span>
 <span class="line"><span style="color:#79B8FF">  height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">8</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#79B8FF">  background</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">var</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">--colorPrimary</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <hr>
 <h2 id="维护说明">维护说明</h2>
 <h3 id="样式变量修改位置">样式变量修改位置</h3>
@@ -633,8 +602,7 @@
 <h3 id="筛选逻辑扩展方法">筛选逻辑扩展方法</h3>
 <h4 id="添加新的筛选维度如标签筛选">添加新的筛选维度（如：标签筛选）</h4>
 <p><strong>步骤1</strong>：在data.ts中定义标签数据</p>
-<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> poemTags</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">'爱情'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'自然'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'哲思'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'生活'</span><span style="color:#E1E4E8">];</span></span>
-<span class="line"></span></code></pre>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">export</span><span style="color:#F97583"> const</span><span style="color:#79B8FF"> poemTags</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">'爱情'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'自然'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'哲思'</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">'生活'</span><span style="color:#E1E4E8">];</span></span></code></pre>
 <p><strong>步骤2</strong>：在index.astro中添加筛选组</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="astro"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"filter-group"</span><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">button</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"filter-group-toggle"</span><span style="color:#B392F0"> data-group</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"tag"</span><span style="color:#E1E4E8">></span></span>
@@ -642,16 +610,15 @@
 <span class="line"><span style="color:#E1E4E8">    &#x3C;</span><span style="color:#85E89D">svg</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"toggle-icon"</span><span style="color:#E1E4E8">>...&#x3C;/</span><span style="color:#85E89D">svg</span><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">button</span><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#E1E4E8">  &#x3C;</span><span style="color:#85E89D">div</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"filter-options"</span><span style="color:#B392F0"> data-group-content</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"tag"</span><span style="color:#E1E4E8">></span></span>
-<span class="line"><span style="color:#E1E4E8">    {poemTags.map((tag) => (</span></span>
-<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">label</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"filter-option"</span><span style="color:#E1E4E8">></span></span>
-<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"checkbox"</span><span style="color:#B392F0"> name</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"tag"</span><span style="color:#B392F0"> value</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{tag}</span><span style="color:#E1E4E8"> /></span></span>
-<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"checkbox-custom"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
-<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"option-label"</span><span style="color:#E1E4E8">>{tag}&#x3C;/span></span></span>
+<span class="line"><span style="color:#E1E4E8">    {poemTags.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">tag</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> (</span></span>
+<span class="line"><span style="color:#E1E4E8">      &#x3C;</span><span style="color:#85E89D">label</span><span style="color:#B392F0"> class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"filter-option"</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">input</span><span style="color:#B392F0"> type</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"checkbox"</span><span style="color:#B392F0"> name</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"tag"</span><span style="color:#B392F0"> value</span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{tag} /></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"checkbox-custom"</span><span style="color:#E1E4E8">>&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
+<span class="line"><span style="color:#E1E4E8">        &#x3C;</span><span style="color:#85E89D">span</span><span style="color:#B392F0"> class</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">"option-label"</span><span style="color:#E1E4E8">>{tag}&#x3C;/</span><span style="color:#85E89D">span</span><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#E1E4E8">      &#x3C;/</span><span style="color:#85E89D">label</span><span style="color:#E1E4E8">></span></span>
 <span class="line"><span style="color:#E1E4E8">    ))}</span></span>
 <span class="line"><span style="color:#E1E4E8">  &#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
-<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">&#x3C;/</span><span style="color:#85E89D">div</span><span style="color:#E1E4E8">></span></span></code></pre>
 <p><strong>步骤3</strong>：在filterPoems()中添加过滤逻辑</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> selectedTags</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Array.</span><span style="color:#B392F0">from</span><span style="color:#E1E4E8">(</span></span>
 <span class="line"><span style="color:#E1E4E8">  document.</span><span style="color:#B392F0">querySelectorAll</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'input[name="tag"]:checked'</span><span style="color:#E1E4E8">)</span></span>
@@ -666,18 +633,16 @@
 <span class="line"><span style="color:#E1E4E8">  poem.classList.</span><span style="color:#B392F0">remove</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hidden'</span><span style="color:#E1E4E8">);</span></span>
 <span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#E1E4E8">  poem.classList.</span><span style="color:#B392F0">add</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'hidden'</span><span style="color:#E1E4E8">);</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <p><strong>步骤4</strong>：在诗歌列表项中添加data属性</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="astro"><code><span class="line"><span style="color:#E1E4E8">&#x3C;</span><span style="color:#85E89D">a</span></span>
-<span class="line"><span style="color:#B392F0">  href</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{</span><span style="color:#E1E4E8">`/</span><span style="color:#B392F0">poetry</span><span style="color:#E1E4E8">/</span><span style="color:#B392F0">$</span><span style="color:#E1E4E8">{</span><span style="color:#B392F0">poem.id</span><span style="color:#E1E4E8">}`}</span></span>
+<span class="line"><span style="color:#B392F0">  href</span><span style="color:#E1E4E8">={</span><span style="color:#9ECBFF">`/poetry/${</span><span style="color:#E1E4E8">poem</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">id</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">}</span></span>
 <span class="line"><span style="color:#B392F0">  class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">"poem-item"</span></span>
-<span class="line"><span style="color:#B392F0">  data-type</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{poem.type}</span></span>
-<span class="line"><span style="color:#B392F0">  data-year</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{poem.year}</span></span>
-<span class="line"><span style="color:#B392F0">  data-title</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{poem.title}</span></span>
-<span class="line"><span style="color:#B392F0">  data-tags</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">{poem.tags.join(</span><span style="color:#E1E4E8">',')}  ← </span><span style="color:#B392F0">新增</span></span>
-<span class="line"><span style="color:#E1E4E8">></span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#B392F0">  data-type</span><span style="color:#E1E4E8">={poem.type}</span></span>
+<span class="line"><span style="color:#B392F0">  data-year</span><span style="color:#E1E4E8">={poem.year}</span></span>
+<span class="line"><span style="color:#B392F0">  data-title</span><span style="color:#E1E4E8">={poem.title}</span></span>
+<span class="line"><span style="color:#B392F0">  data-tags</span><span style="color:#E1E4E8">={poem.tags.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">','</span><span style="color:#E1E4E8">)}  ← </span><span style="color:#B392F0">新增</span></span>
+<span class="line"><span style="color:#E1E4E8">></span></span></code></pre>
 <h3 id="性能优化建议">性能优化建议</h3>
 <h4 id="1-搜索防抖">1. 搜索防抖</h4>
 <p>对于大量诗歌，频繁的过滤操作可能影响性能。</p>
@@ -686,8 +651,7 @@
 <span class="line"><span style="color:#E1E4E8">searchInput?.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">'input'</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#B392F0">  clearTimeout</span><span style="color:#E1E4E8">(debounceTimer);</span></span>
 <span class="line"><span style="color:#E1E4E8">  debounceTimer </span><span style="color:#F97583">=</span><span style="color:#B392F0"> setTimeout</span><span style="color:#E1E4E8">(filterPoems, </span><span style="color:#79B8FF">300</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">// 300ms延迟</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <h4 id="2-事件委托">2. 事件委托</h4>
 <p>目前每个复选框都有独立监听器，数量多时可能影响性能。</p>
 <p><strong>优化方案</strong>：使用事件委托</p>
@@ -697,8 +661,7 @@
 <span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (target.type </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> 'checkbox'</span><span style="color:#E1E4E8">) {</span></span>
 <span class="line"><span style="color:#B392F0">    filterPoems</span><span style="color:#E1E4E8">();</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <h4 id="3-虚拟滚动">3. 虚拟滚动</h4>
 <p>如果诗歌数量超过1000首，可考虑虚拟滚动。</p>
 <p><strong>推荐库</strong>：</p>
@@ -716,8 +679,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#B392F0">.poem-item:hover</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#79B8FF">  transform</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">translateY</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">-2</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">);  </span><span style="color:#6A737D">/* 比修改 margin-top 更高效 */</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <hr>
 <h2 id="常见问题">常见问题</h2>
 <h3 id="q1-筛选不生效">Q1: 筛选不生效？</h3>
@@ -745,8 +707,7 @@
 <span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">!</span><span style="color:#E1E4E8">isComposing) {</span></span>
 <span class="line"><span style="color:#B392F0">    filterPoems</span><span style="color:#E1E4E8">();</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">});</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
 <h3 id="q3-移动端筛选栏太长">Q3: 移动端筛选栏太长？</h3>
 <p><strong>解决方案</strong>：添加高度限制和滚动</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#F97583">@media</span><span style="color:#E1E4E8"> (</span><span style="color:#79B8FF">max-width</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">768</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">) {</span></span>
@@ -754,8 +715,7 @@
 <span class="line"><span style="color:#79B8FF">    max-height</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">50</span><span style="color:#F97583">vh</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#79B8FF">    overflow-y</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">auto</span><span style="color:#E1E4E8">;</span></span>
 <span class="line"><span style="color:#E1E4E8">  }</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <h3 id="q4-如何添加动画效果">Q4: 如何添加动画效果？</h3>
 <p><strong>淡入动画</strong>：</p>
 <pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="css"><code><span class="line"><span style="color:#F97583">@keyframes</span><span style="color:#FFAB70"> fadeIn</span><span style="color:#E1E4E8"> {</span></span>
@@ -769,8 +729,7 @@
 <span class="line"></span>
 <span class="line"><span style="color:#B392F0">.poem-item.hidden</span><span style="color:#E1E4E8"> {</span></span>
 <span class="line"><span style="color:#79B8FF">  display</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">none</span><span style="color:#E1E4E8">;</span></span>
-<span class="line"><span style="color:#E1E4E8">}</span></span>
-<span class="line"></span></code></pre>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
 <hr>
 <h2 id="技术栈总结">技术栈总结</h2>
 

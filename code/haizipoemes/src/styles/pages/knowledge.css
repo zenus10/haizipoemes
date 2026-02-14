@@ -1,0 +1,367 @@
+/* ============================================
+   Knowledge Page - 知识页面样式
+   单列卡片布局 + 原地展开
+   ============================================ */
+
+.knowledge-page {
+  display: flex;
+  gap: var(--spacing2xl);
+  height: calc(100vh - var(--navHeight));
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   左侧筛选栏
+   ========================================== */
+
+.filter-sidebar {
+  flex-shrink: 0;
+  width: 200px;
+  padding: var(--spacingLg) 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: var(--spacingSm);
+  margin-bottom: var(--spacingMd);
+  flex-shrink: 0;
+}
+
+.filter-title {
+  font-size: var(--fontSizeXs);
+  font-weight: 500;
+  color: var(--colorTextMuted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.filter-section {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-top: 0;
+  padding-bottom: var(--spacingMd);
+  scrollbar-width: none;
+}
+
+.filter-section::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-group {
+  margin-bottom: var(--spacingMd);
+}
+
+.filter-options {
+  padding: var(--spacingXs) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacingSm);
+  padding: var(--spacingSm) var(--spacingMd);
+  border-radius: var(--radiusMd);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: all var(--transitionFast);
+  font-family: inherit;
+  font-size: var(--fontSizeSm);
+  color: var(--colorTextLight);
+}
+
+.filter-option:hover {
+  background-color: var(--colorBackgroundHover);
+  color: var(--colorText);
+}
+
+.filter-option.active {
+  background-color: var(--colorPrimaryAlpha4);
+  color: var(--colorPrimary);
+}
+
+.option-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.option-count {
+  font-size: var(--fontSizeXs);
+  color: var(--colorTextMuted);
+  font-weight: 400;
+}
+
+.filter-option.active .option-count {
+  color: var(--colorPrimary);
+}
+
+/* ==========================================
+   右侧主内容区
+   ========================================== */
+
+.knowledge-main {
+  flex: 1;
+  min-width: 0;
+  padding: var(--spacingLg) 0;
+  overflow-y: auto;
+}
+
+/* ==========================================
+   卡片容器
+   ========================================== */
+
+.knowledge-cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacingLg);
+  padding-bottom: var(--spacing2xl);
+}
+
+.knowledge-cards.hidden {
+  display: none;
+}
+
+/* ==========================================
+   卡片 - 微影悬浮风格
+   ========================================== */
+
+.knowledge-card {
+  background: var(--colorBackground);
+  border: none;
+  border-radius: var(--radiusLg);
+  padding: var(--spacingLg) var(--spacingXl);
+  box-shadow: 0 1px 3px var(--colorShadow2), 0 1px 2px var(--colorShadow1);
+  transition: box-shadow var(--transitionNormal);
+}
+
+.knowledge-card:hover {
+  box-shadow: 0 4px 12px var(--colorShadow3), 0 2px 4px var(--colorShadow1);
+}
+
+/* ==========================================
+   预览区域（收起状态显示）
+   ========================================== */
+
+.card-preview {
+  display: block;
+}
+
+.knowledge-card.expanded .card-preview {
+  display: none;
+}
+
+.card-text {
+  font-size: var(--fontSizeSm);
+  line-height: 1.8;
+  color: var(--colorText);
+  margin: 0;
+}
+
+/* ==========================================
+   展开内容区域（使用 grid 动画）
+   ========================================== */
+
+.card-full {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--transitionSlow);
+}
+
+.card-full.always-visible {
+  grid-template-rows: 1fr;
+}
+
+.knowledge-card.expanded .card-full {
+  grid-template-rows: 1fr;
+}
+
+.card-rendered {
+  overflow: hidden;
+}
+
+.card-full.always-visible .card-rendered {
+  overflow: visible;
+}
+
+.knowledge-card.expanded .card-rendered {
+  overflow: visible;
+}
+
+/* prose 内容微调 */
+.card-rendered.prose {
+  font-size: var(--fontSizeSm);
+  line-height: 1.8;
+}
+
+.card-rendered.prose > :first-child {
+  margin-top: 0;
+}
+
+.card-rendered.prose > :last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================
+   卡片底栏
+   ========================================== */
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--spacingMd);
+  padding-top: var(--spacingMd);
+  border-top: 1px solid var(--colorBorderLight);
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacingSm);
+  font-size: var(--fontSizeXs);
+  color: var(--colorTextMuted);
+}
+
+.card-author {
+  font-weight: 500;
+}
+
+.card-divider {
+  opacity: 0.4;
+}
+
+/* ==========================================
+   展开/收起按钮
+   ========================================== */
+
+.card-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: var(--spacingXs) var(--spacingSm);
+  background: transparent;
+  border: 1px solid var(--colorBorder);
+  border-radius: var(--radiusMd);
+  font-family: inherit;
+  font-size: var(--fontSizeXs);
+  font-weight: 500;
+  color: var(--colorTextLight);
+  cursor: pointer;
+  transition: all var(--transitionFast);
+}
+
+.card-toggle:hover {
+  border-color: var(--colorText);
+  color: var(--colorText);
+}
+
+.toggle-icon {
+  transition: transform var(--transitionFast);
+}
+
+.knowledge-card.expanded .toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* ==========================================
+   空状态
+   ========================================== */
+
+.knowledge-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: var(--colorTextMuted);
+  font-size: var(--fontSizeSm);
+}
+
+.knowledge-empty.hidden {
+  display: none;
+}
+
+/* ==========================================
+   响应式设计
+   ========================================== */
+
+/* 平板 */
+@media (max-width: 1024px) {
+  .knowledge-page {
+    width: 90%;
+  }
+
+  .filter-sidebar {
+    width: 180px;
+  }
+}
+
+/* 小平板 */
+@media (max-width: 768px) {
+  .knowledge-page {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 var(--spacingLg);
+    gap: 0;
+  }
+
+  .filter-sidebar {
+    width: 100%;
+    padding: var(--spacingMd) 0;
+    border-bottom: 1px solid var(--colorBorderLight);
+  }
+
+  .filter-header {
+    margin-bottom: var(--spacingSm);
+  }
+
+  .filter-options {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: var(--spacingSm);
+  }
+
+  .filter-option {
+    white-space: nowrap;
+    min-width: fit-content;
+  }
+
+  .knowledge-main {
+    padding: var(--spacingLg) 0;
+  }
+
+  .knowledge-card {
+    padding: var(--spacingMd) var(--spacingLg);
+  }
+}
+
+/* 手机 */
+@media (max-width: 640px) {
+  .knowledge-page {
+    padding: 0 var(--spacingMd);
+  }
+
+  .knowledge-card {
+    padding: var(--spacingMd);
+  }
+
+  .card-text {
+    font-size: var(--fontSizeXs);
+  }
+
+  .card-rendered.prose {
+    font-size: var(--fontSizeXs);
+  }
+}
