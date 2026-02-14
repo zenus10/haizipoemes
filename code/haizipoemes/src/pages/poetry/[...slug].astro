@@ -75,13 +75,38 @@ const jsonLd = {
       </div>
     </article>
 
-    <!-- 右侧目录侧边栏（sticky 定位，始终占位） -->
-    <aside class="toc-sidebar">
-      {hasHeadings && (
+    <!-- 桌面端：右侧 sticky 目录 -->
+    {hasHeadings && (
+      <aside class="toc-sidebar toc-sidebar--desktop">
         <toc-nav data-headings={JSON.stringify(headings)}></toc-nav>
-      )}
-    </aside>
+      </aside>
+    )}
   </div>
+
+  <!-- 移动端目录系统（独立于主内容流） -->
+  {hasHeadings && (
+    <>
+      <button class="m-toc-fab" id="mTocFab" aria-label="打开目录">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 6h18M3 12h12M3 18h18"/>
+        </svg>
+      </button>
+      <div class="m-toc-overlay" id="mTocOverlay"></div>
+      <aside class="m-toc-panel" id="mTocPanel">
+        <div class="m-toc-header">
+          <h3 class="m-toc-title">目录</h3>
+          <button class="m-toc-close" id="mTocClose" aria-label="关闭目录">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 6L6 18M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="m-toc-body">
+          <toc-nav data-headings={JSON.stringify(headings)}></toc-nav>
+        </div>
+      </aside>
+    </>
+  )}
 
 </BaseLayout>
 
@@ -179,10 +204,18 @@ const jsonLd = {
       clearInterval(this._pollTimer);
     }
 
-    // 从 .poem-content 父级开始向上查找页面级滚动容器（跳过 .toc-sidebar）
+    // 查找页面级滚动容器
+    // 桌面端：从 .poem-content 向上找；移动端面板：直接查找 .overflow-y-auto
     _findScrollContainer() {
       let el = this.closest('.poem-content');
-      if (el) el = el.parentElement;
+      if (el) {
+        el = el.parentElement;
+      } else {
+        // 移动端目录面板不在 .poem-content 内，直接从 body 向下查找
+        el = document.querySelector('.overflow-y-auto');
+        if (el) return el;
+        el = document.documentElement;
+      }
       while (el) {
         const { overflowY } = getComputedStyle(el);
         if (overflowY === 'auto' || overflowY === 'scroll') return el;
@@ -259,8 +292,58 @@ const jsonLd = {
       } else if (tocList) {
         tocList.style.setProperty('--toc-bar-height', '0px');
       }
+
     }
   }
 
   customElements.define('toc-nav', TocNav);
+
+  // 移动端目录交互：悬浮按钮 + 右侧面板
+  const mFab = document.getElementById('mTocFab');
+  const mOverlay = document.getElementById('mTocOverlay');
+  const mPanel = document.getElementById('mTocPanel');
+  const mClose = document.getElementById('mTocClose');
+
+  if (mFab && mOverlay && mPanel) {
+    function openPanel() {
+      mPanel!.classList.add('active');
+      mOverlay!.classList.add('active');
+      mFab!.classList.add('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePanel() {
+      mPanel!.classList.remove('active');
+      mOverlay!.classList.remove('active');
+      mFab!.classList.remove('hidden');
+      document.body.style.overflow = '';
+    }
+
+    mFab.addEventListener('click', openPanel);
+    mOverlay.addEventListener('click', closePanel);
+    mClose?.addEventListener('click', closePanel);
+
+    // 点击目录链接后自动关闭面板
+    mPanel.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).classList.contains('toc-link')) {
+        setTimeout(closePanel, 200);
+      }
+    });
+
+    // 触摸右滑关闭面板
+    let startX = 0;
+    let tracking = false;
+
+    mPanel.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      tracking = true;
+    }, { passive: true });
+
+    mPanel.addEventListener('touchend', (e) => {
+      if (!tracking) return;
+      const deltaX = e.changedTouches[0].clientX - startX;
+      if (deltaX > 80) closePanel();
+      tracking = false;
+    });
+  }
 </script>

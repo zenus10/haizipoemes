@@ -25,6 +25,9 @@ const poems = poemsCollection
     window.__POEMS_DATA__ = poems;
   </script>
 
+  <!-- 遮罩层 -->
+  <div class="filter-overlay" id="filterOverlay"></div>
+
   <div class="poetry-page">
     <!-- 左侧筛选栏 -->
     <aside class="filter-sidebar">
@@ -95,6 +98,13 @@ const poems = poemsCollection
           </div>
           <button class="search-button" id="searchButton">搜索</button>
         </div>
+        <button class="filter-trigger" id="filterTrigger" aria-label="打开筛选">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <span>筛选</span>
+          <span class="filter-badge" id="filterBadge" style="display: none;"></span>
+        </button>
         <span class="poem-count" id="poemCount"></span>
       </div>
 
@@ -149,6 +159,10 @@ const poems = poemsCollection
     const emptyEl = document.getElementById('poemListEmpty') as HTMLDivElement;
     const filterToggles = document.querySelectorAll('.filter-group-toggle');
     const checkboxes = document.querySelectorAll<HTMLInputElement>('.filter-option input[type="checkbox"]');
+    const filterTrigger = document.getElementById('filterTrigger') as HTMLButtonElement;
+    const filterOverlay = document.getElementById('filterOverlay') as HTMLDivElement;
+    const filterSidebar = document.querySelector('.filter-sidebar') as HTMLElement;
+    const filterBadge = document.getElementById('filterBadge') as HTMLSpanElement;
 
     if (!poemListEl || !sentinelEl || !viewportEl) return;
 
@@ -297,9 +311,87 @@ const poems = poemsCollection
       applyFilters();
     });
 
+    // ===== 移动端筛选弹窗 =====
+    // 打开筛选弹窗
+    filterTrigger?.addEventListener('click', () => {
+      filterSidebar.classList.add('active');
+      filterOverlay.classList.add('active');
+      filterOverlay.style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    });
+
+    // 关闭筛选弹窗
+    function closeFilter() {
+      filterSidebar.classList.remove('active');
+      filterOverlay.classList.remove('active');
+      setTimeout(() => {
+        filterOverlay.style.display = 'none';
+      }, 300);
+      document.body.style.overflow = '';
+    }
+
+    // 点击遮罩关闭
+    filterOverlay?.addEventListener('click', closeFilter);
+
+    // 触摸滑动关闭
+    let touchStartY = 0;
+    let touchCurrentY = 0;
+    let isSwiping = false;
+
+    filterSidebar?.addEventListener('touchstart', (e) => {
+      const target = e.target as HTMLElement;
+      // 只在非滚动区域允许滑动关闭
+      if (target.closest('.filter-section')) return;
+
+      touchStartY = e.touches[0].clientY;
+      isSwiping = true;
+    }, { passive: true });
+
+    filterSidebar?.addEventListener('touchmove', (e) => {
+      if (!isSwiping) return;
+
+      touchCurrentY = e.touches[0].clientY;
+      const deltaY = touchCurrentY - touchStartY;
+
+      if (deltaY > 0) {
+        filterSidebar.style.transform = `translateY(${deltaY}px)`;
+      }
+    }, { passive: true });
+
+    filterSidebar?.addEventListener('touchend', () => {
+      if (!isSwiping) return;
+
+      const deltaY = touchCurrentY - touchStartY;
+
+      if (deltaY > 100) {
+        closeFilter();
+      }
+
+      filterSidebar.style.transform = '';
+      isSwiping = false;
+      touchStartY = 0;
+      touchCurrentY = 0;
+    });
+
+    // 更新筛选徽章
+    function updateFilterBadge() {
+      const activeFilters =
+        document.querySelectorAll<HTMLInputElement>('input[name="type"]:checked, input[name="year"]:checked').length;
+
+      if (activeFilters > 0) {
+        filterBadge.textContent = activeFilters.toString();
+        filterBadge.style.display = 'flex';
+      } else {
+        filterBadge.style.display = 'none';
+      }
+    }
+
     // ===== checkbox 筛选 =====
     checkboxes.forEach(checkbox => {
-      checkbox.addEventListener('change', () => applyFilters());
+      checkbox.addEventListener('change', () => {
+        applyFilters();
+        updateFilterBadge();
+      });
     });
 
     // ===== 清除所有筛选 =====
@@ -319,6 +411,7 @@ const poems = poemsCollection
         sessionStorage.removeItem(SESSION_KEY);
       } catch {}
       applyFilters();
+      updateFilterBadge();
     });
 
     // ===== sessionStorage 状态持久化 =====
@@ -431,6 +524,7 @@ const poems = poemsCollection
     if (!restored) {
       applyFilters();
     }
+    updateFilterBadge();
   }
 
   // 确保 DOM 就绪后执行

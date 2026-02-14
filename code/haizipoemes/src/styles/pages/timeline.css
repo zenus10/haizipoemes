@@ -211,6 +211,29 @@
     min-width: 100%;
     height: auto;
     padding: var(--spacingMd);
+    position: relative;
+  }
+
+  /* 左右渐变遮罩提示 */
+  .timeline-nav::before,
+  .timeline-nav::after {
+    content: '';
+    position: absolute;
+    top: var(--spacingMd);
+    bottom: var(--spacingMd);
+    width: 24px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .timeline-nav::before {
+    left: 0;
+    background: linear-gradient(to right, var(--colorBackground) 0%, transparent 100%);
+  }
+
+  .timeline-nav::after {
+    right: 0;
+    background: linear-gradient(to left, var(--colorBackground) 0%, transparent 100%);
   }
 
   .card-stack {
@@ -224,9 +247,17 @@
     overflow-x: auto;
     padding: var(--spacingSm) 0;
     -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .timeline-mobile::-webkit-scrollbar {
+    display: none;
   }
 
   .mobile-year-btn {
+    scroll-snap-align: center;
     flex-shrink: 0;
     padding: 6px 14px;
     font-family: var(--fontDisplay);
@@ -238,6 +269,10 @@
     cursor: pointer;
     transition: all var(--transitionNormal);
     opacity: 0.5;
+  }
+
+  .mobile-year-btn:active {
+    transform: scale(0.95);
   }
 
   .mobile-year-btn.active {
@@ -260,5 +295,36 @@
 
   .year-title {
     font-size: var(--fontSize2xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-mobile {
+    padding: var(--spacingXs) 0;
+  }
+
+  .mobile-year-btn {
+    padding: 5px 12px;
+    font-size: var(--fontSizeXs);
+    border-radius: 16px;
+  }
+
+  .timeline-content {
+    padding: var(--spacingSm) var(--spacingMd) var(--spacingMd);
+    margin: 8px 8px 0 8px;
+  }
+
+  .year-title {
+    font-size: var(--fontSizeXl);
+    margin-bottom: var(--spacingMd);
+  }
+
+  .year-text {
+    font-size: var(--fontSizeXs);
+    line-height: 1.65;
+  }
+
+  .year-text p {
+    margin-bottom: var(--spacingMd);
   }
 }

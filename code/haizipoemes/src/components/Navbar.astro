@@ -39,7 +39,30 @@ const navItems = [
           ))
         }
       </ul>
+
+      <!-- 移动端汉堡菜单按钮 -->
+      <button class="menu-toggle" aria-label="打开菜单" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
     </div>
+  </div>
+
+  <!-- 移动端菜单 -->
+  <div class="mobile-menu">
+    <ul class="mobile-nav-links">
+      {
+        navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class:list={["mobile-nav-link", { active: currentPage === item.key }]}
+            >
+              {item.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </nav>
 
@@ -112,6 +135,107 @@ const navItems = [
     color: var(--colorPrimary);
   }
 
+  /* 移动端菜单按钮（默认隐藏） */
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1001;
+  }
+
+  .hamburger {
+    position: relative;
+    width: 1.5rem;
+    height: 2px;
+    background: var(--colorText);
+    transition: background var(--transitionFast);
+  }
+
+  .hamburger::before,
+  .hamburger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--colorText);
+    transition: transform var(--transitionNormal), top var(--transitionNormal);
+  }
+
+  .hamburger::before {
+    top: -0.5rem;
+  }
+
+  .hamburger::after {
+    top: 0.5rem;
+  }
+
+  /* 菜单打开状态 */
+  .menu-toggle.active .hamburger {
+    background: transparent;
+  }
+
+  .menu-toggle.active .hamburger::before {
+    top: 0;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle.active .hamburger::after {
+    top: 0;
+    transform: rotate(-45deg);
+  }
+
+  /* 移动端菜单（默认隐藏） */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: var(--navHeight);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--colorBackground);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transitionNormal), visibility var(--transitionNormal);
+    overflow-y: auto;
+  }
+
+  .mobile-menu.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacingXl) var(--spacingLg);
+    gap: 0;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    font-size: var(--fontSizeLg);
+    font-weight: 500;
+    color: var(--colorText);
+    padding: var(--spacingMd) var(--spacingSm);
+    border-bottom: 1px solid var(--colorBorderLight);
+    transition: color var(--transitionFast), background-color var(--transitionFast);
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    color: var(--colorPrimary);
+    background-color: var(--colorBackgroundHover);
+  }
+
   @media (max-width: 768px) {
     .navbar-container {
       padding: 0 var(--spacingMd);
@@ -130,6 +254,11 @@ const navItems = [
     .nav-links {
       display: none;
     }
+
+    .menu-toggle,
+    .mobile-menu {
+      display: flex;
+    }
   }
 </style>
 
@@ -147,4 +276,47 @@ const navItems = [
 
   window.addEventListener("scroll", handleScroll, { passive: true });
   handleScroll();
+
+  // 移动端菜单切换
+  const menuToggle = document.querySelector(".menu-toggle");
+  const mobileMenu = document.querySelector(".mobile-menu");
+  const body = document.body;
+
+  menuToggle?.addEventListener("click", () => {
+    const isActive = menuToggle.classList.toggle("active");
+    mobileMenu?.classList.toggle("active");
+
+    // 更新 ARIA 属性
+    menuToggle.setAttribute("aria-expanded", isActive.toString());
+    menuToggle.setAttribute("aria-label", isActive ? "关闭菜单" : "打开菜单");
+
+    // 防止背景滚动
+    if (isActive) {
+      body.style.overflow = "hidden";
+    } else {
+      body.style.overflow = "";
+    }
+  });
+
+  // 点击菜单项后关闭菜单
+  const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+  mobileNavLinks.forEach(link => {
+    link.addEventListener("click", () => {
+      menuToggle?.classList.remove("active");
+      mobileMenu?.classList.remove("active");
+      menuToggle?.setAttribute("aria-expanded", "false");
+      menuToggle?.setAttribute("aria-label", "打开菜单");
+      body.style.overflow = "";
+    });
+  });
+
+  // 窗口大小改变时重置菜单状态
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 640) {
+      menuToggle?.classList.remove("active");
+      mobileMenu?.classList.remove("active");
+      menuToggle?.setAttribute("aria-expanded", "false");
+      body.style.overflow = "";
+    }
+  });
 </script>

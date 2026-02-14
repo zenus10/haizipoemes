@@ -159,7 +159,18 @@ const defaultIndex = Math.floor(timelineData.length / 2);
 
     // 移动端按钮点击
     document.querySelectorAll('.mobile-year-btn').forEach((btn, index) => {
-      btn.addEventListener('click', () => setActiveYear(index));
+      btn.addEventListener('click', () => {
+        setActiveYear(index);
+
+        // 自动滚动到视口中心
+        setTimeout(() => {
+          btn.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          });
+        }, 50);
+      });
     });
 
     // 初始化：先禁用 transition 防止入场动画
@@ -174,5 +185,16 @@ const defaultIndex = Math.floor(timelineData.length / 2);
         (card as HTMLElement).style.transition = '';
       });
     });
+
+    // 初始化：将默认激活项滚动到中心（仅移动端）
+    setTimeout(() => {
+      const defaultBtn = document.querySelector(`.mobile-year-btn[data-index="${currentIndex}"]`);
+      if (defaultBtn && window.innerWidth <= 768) {
+        defaultBtn.scrollIntoView({
+          block: 'nearest',
+          inline: 'center'
+        });
+      }
+    }, 100);
   });
 </script>

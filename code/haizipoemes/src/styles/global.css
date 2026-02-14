@@ -343,3 +343,77 @@ input, textarea, select {
   line-height: 2;
   letter-spacing: 0.08em;
 }
+
+/* ==========================================
+   响应式设计 - 移动端优化
+   ========================================== */
+
+/* 平板设备 (768px - 1024px) */
+@media (max-width: 1024px) {
+  :root {
+    --containerMax: 100%;
+    --sidebarWidth: 280px;
+  }
+
+  .container {
+    padding: 0 var(--spacingLg);
+  }
+}
+
+/* 移动设备 (最大 768px) */
+@media (max-width: 768px) {
+  :root {
+    /* 调整字号以适应小屏幕 */
+    --fontSize3xl: 1.625rem;    /* 26px */
+    --fontSize4xl: 2rem;        /* 32px */
+    --fontSize5xl: 2.5rem;      /* 40px */
+    --fontSize6xl: 3rem;        /* 48px */
+
+    /* 调整间距 */
+    --spacing2xl: 2.5rem;       /* 40px */
+    --spacing3xl: 3rem;         /* 48px */
+
+    /* 调整布局 */
+    --navHeight: 60px;
+    --sidebarWidth: 100%;
+  }
+
+  .container {
+    padding: 0 var(--spacingMd);
+  }
+
+  h1 { font-size: var(--fontSize3xl); }
+  h2 { font-size: var(--fontSize2xl); }
+  h3 { font-size: var(--fontSizeXl); }
+}
+
+/* 小型移动设备 (最大 480px) */
+@media (max-width: 480px) {
+  :root {
+    /* 进一步调整字号 */
+    --fontSize2xl: 1.375rem;    /* 22px */
+    --fontSize3xl: 1.5rem;      /* 24px */
+    --fontSize4xl: 1.75rem;     /* 28px */
+    --fontSize5xl: 2rem;        /* 32px */
+
+    /* 调整间距 */
+    --spacingLg: 1.25rem;       /* 20px */
+    --spacingXl: 1.5rem;        /* 24px */
+    --spacing2xl: 2rem;         /* 32px */
+    --spacing3xl: 2.5rem;       /* 40px */
+
+    /* 调整布局 */
+    --navHeight: 56px;
+  }
+
+  .container {
+    padding: 0 var(--spacingSm);
+  }
+
+  .back-to-top {
+    bottom: 1rem;
+    right: 1rem;
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+}

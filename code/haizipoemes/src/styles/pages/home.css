@@ -4,4 +4,21 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
+}
+
+/* 响应式 - 移动端优化 */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center top;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    background-size: auto 100%;
+    background-position: center center;
+  }
 }
