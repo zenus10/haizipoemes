@@ -16,6 +16,11 @@ const poems = poemsCollection
     title: poem.data.title,
     type: poem.data.type,
     year: poem.data.year,
+    body: poem.body
+      .replace(/^#+\s+/gm, '')
+      .replace(/[*_~`>]/g, '')
+      .replace(/\n{2,}/g, '\n')
+      .trim(),
   }));
 ---
 
@@ -92,7 +97,7 @@ const poems = poemsCollection
             <input
               type="text"
               class="search-input"
-              placeholder="Search"
+              placeholder="搜索诗歌标题或内容"
               id="poemSearch"
             />
           </div>
@@ -123,8 +128,11 @@ const poems = poemsCollection
 </BaseLayout>
 
 <script>
+  import Fuse from 'fuse.js';
+
   // 常量
   const ITEM_HEIGHT = 40;
+  const ITEM_HEIGHT_WITH_SNIPPET = 60;
   const OVERSCAN = 5;
   const DEBOUNCE_DELAY = 150;
   const SESSION_KEY = 'poetry-filter-state';
@@ -134,6 +142,12 @@ const poems = poemsCollection
     title: string;
     type: string;
     year: string;
+    body: string;
+  }
+
+  interface SearchResult {
+    poem: PoemData;
+    snippet: string | null;
   }
 
   interface FilterState {
@@ -144,9 +158,37 @@ const poems = poemsCollection
     collapsedGroups: string[];
   }
 
+  // ===== 片段提取 =====
+  function extractSnippet(body: string, indices: readonly [number, number][], contextChars = 20): string {
+    if (indices.length === 0) return '';
+    const [start, end] = indices[0];
+    const snippetStart = Math.max(0, start - contextChars);
+    const snippetEnd = Math.min(body.length, end + 1 + contextChars);
+
+    let snippet = '';
+    if (snippetStart > 0) snippet += '...';
+    snippet += body.slice(snippetStart, snippetEnd);
+    if (snippetEnd < body.length) snippet += '...';
+
+    return snippet.replace(/\n/g, ' ');
+  }
+
   function init() {
     // 数据
     const allPoems: PoemData[] = (window as any).__POEMS_DATA__ || [];
+
+    // 初始化 Fuse.js
+    const fuse = new Fuse(allPoems, {
+      keys: [
+        { name: 'title', weight: 2 },
+        { name: 'body', weight: 1 },
+      ],
+      threshold: 0.3,
+      distance: 1000,
+      includeMatches: true,
+      minMatchCharLength: 1,
+      ignoreLocation: true,
+    });
 
     // DOM 引用
     const poemListEl = document.getElementById('poemList') as HTMLDivElement;
@@ -167,7 +209,8 @@ const poems = poemsCollection
     if (!poemListEl || !sentinelEl || !viewportEl) return;
 
     // 状态
-    let filteredPoems: PoemData[] = [];
+    let filteredResults: SearchResult[] = [];
+    let hasActiveSearch = false;
     let renderedStart = -1;
     let renderedEnd = -1;
     let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -187,21 +230,41 @@ const poems = poemsCollection
 
     // ===== 核心：应用筛选 =====
     function applyFilters(skipScrollReset = false) {
-      const searchTerm = searchInput.value.toLowerCase().trim();
+      const searchTerm = searchInput.value.trim();
       const selectedTypes = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="type"]:checked'))
         .map(input => input.value);
       const selectedYears = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="year"]:checked'))
         .map(input => input.value);
 
-      filteredPoems = allPoems.filter(poem => {
-        const matchesSearch = !searchTerm || poem.title.toLowerCase().includes(searchTerm);
+      // 阶段1：文本搜索（Fuse.js 或直接透传）
+      let searchResults: SearchResult[];
+
+      if (searchTerm) {
+        hasActiveSearch = true;
+        const fuseResults = fuse.search(searchTerm);
+        searchResults = fuseResults.map(result => {
+          const bodyMatch = result.matches?.find(m => m.key === 'body');
+          let snippet: string | null = null;
+          if (bodyMatch && bodyMatch.indices.length > 0) {
+            snippet = extractSnippet(result.item.body, bodyMatch.indices);
+          }
+          return { poem: result.item, snippet };
+        });
+      } else {
+        hasActiveSearch = false;
+        searchResults = allPoems.map(poem => ({ poem, snippet: null }));
+      }
+
+      // 阶段2：在搜索结果上叠加类型/年份筛选
+      filteredResults = searchResults.filter(({ poem }) => {
         const matchesType = selectedTypes.length === 0 || selectedTypes.includes(poem.type);
         const matchesYear = selectedYears.length === 0 || selectedYears.includes(poem.year);
-        return matchesSearch && matchesType && matchesYear;
+        return matchesType && matchesYear;
       });
 
       // 更新 sentinel 高度
-      sentinelEl.style.height = filteredPoems.length * ITEM_HEIGHT + 'px';
+      const itemH = hasActiveSearch ? ITEM_HEIGHT_WITH_SNIPPET : ITEM_HEIGHT;
+      sentinelEl.style.height = filteredResults.length * itemH + 'px';
 
       // 重置滚动位置（除非恢复状态）
       if (!skipScrollReset) {
@@ -214,7 +277,7 @@ const poems = poemsCollection
 
       // 空状态（必须在 renderVisibleItems 之前，否则 display:none 导致 clientHeight=0）
       if (emptyEl) {
-        const isEmpty = filteredPoems.length === 0;
+        const isEmpty = filteredResults.length === 0;
         emptyEl.classList.toggle('visible', isEmpty);
         poemListEl.style.display = isEmpty ? 'none' : '';
       }
@@ -224,9 +287,9 @@ const poems = poemsCollection
 
       // 更新计数
       if (countEl) {
-        countEl.textContent = filteredPoems.length === allPoems.length
+        countEl.textContent = filteredResults.length === allPoems.length
           ? `${allPoems.length} 首`
-          : `${filteredPoems.length} / ${allPoems.length} 首`;
+          : `${filteredResults.length} / ${allPoems.length} 首`;
       }
 
       saveState();
@@ -239,11 +302,12 @@ const poems = poemsCollection
 
       if (clientHeight === 0) return;
 
-      const startIndex = Math.floor(scrollTop / ITEM_HEIGHT);
-      const visibleCount = Math.ceil(clientHeight / ITEM_HEIGHT);
+      const itemH = hasActiveSearch ? ITEM_HEIGHT_WITH_SNIPPET : ITEM_HEIGHT;
+      const startIndex = Math.floor(scrollTop / itemH);
+      const visibleCount = Math.ceil(clientHeight / itemH);
 
       const renderStart = Math.max(0, startIndex - OVERSCAN);
-      const renderEnd = Math.min(filteredPoems.length, startIndex + visibleCount + OVERSCAN);
+      const renderEnd = Math.min(filteredResults.length, startIndex + visibleCount + OVERSCAN);
 
       // 如果范围没变则跳过
       if (renderStart === renderedStart && renderEnd === renderedEnd) return;
@@ -255,22 +319,42 @@ const poems = poemsCollection
       const fragment = document.createDocumentFragment();
 
       for (let i = renderStart; i < renderEnd; i++) {
-        const poem = filteredPoems[i];
+        const { poem, snippet } = filteredResults[i];
         const a = document.createElement('a');
-        a.href = `/poetry/${poem.id}`;
+        const q = searchInput.value.trim();
+        a.href = q
+          ? `/poetry/${poem.id}?q=${encodeURIComponent(q)}`
+          : `/poetry/${poem.id}`;
         a.className = 'poem-item';
-        a.style.top = i * ITEM_HEIGHT + 'px';
-        a.style.height = ITEM_HEIGHT + 'px';
+        a.style.top = i * itemH + 'px';
+        a.style.height = itemH + 'px';
 
         const dot = document.createElement('span');
         dot.className = 'poem-dot';
-
-        const title = document.createElement('span');
-        title.className = 'poem-title';
-        title.textContent = poem.title;
-
         a.appendChild(dot);
-        a.appendChild(title);
+
+        if (snippet) {
+          const textContainer = document.createElement('div');
+          textContainer.className = 'poem-text-container';
+
+          const titleSpan = document.createElement('span');
+          titleSpan.className = 'poem-title';
+          titleSpan.textContent = poem.title;
+          textContainer.appendChild(titleSpan);
+
+          const snippetSpan = document.createElement('span');
+          snippetSpan.className = 'poem-snippet';
+          snippetSpan.textContent = snippet;
+          textContainer.appendChild(snippetSpan);
+
+          a.appendChild(textContainer);
+        } else {
+          const titleSpan = document.createElement('span');
+          titleSpan.className = 'poem-title';
+          titleSpan.textContent = poem.title;
+          a.appendChild(titleSpan);
+        }
+
         fragment.appendChild(a);
       }
 
@@ -309,6 +393,19 @@ const poems = poemsCollection
         debounceTimer = null;
       }
       applyFilters();
+    });
+
+    // 回车键搜索
+    searchInput?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (debounceTimer !== null) {
+          clearTimeout(debounceTimer);
+          debounceTimer = null;
+        }
+        applyFilters();
+        searchInput.blur(); // 收起移动端键盘
+      }
     });
 
     // ===== 移动端筛选弹窗 =====

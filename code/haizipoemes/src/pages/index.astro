@@ -1,10 +1,29 @@
 ---
 // Home Page - 首页
-// 展示海子图片
+// 桌面端展示海子背景图 + 内容引导，移动端展示水墨画导航引导页
 
 import BaseLayout from "../layouts/BaseLayout.astro";
 import "../styles/pages/home.css";
+
 ---
 
 <BaseLayout title="首页" description="海子诗歌作品集 - 探索中国当代最具影响力的诗人海子的全部诗歌作品，包括短诗、长诗及太阳七部书" currentPage="home">
+
+  <!-- 桌面端首页 -->
+  <div class="home-desktop-hero"></div>
+
+  <!-- 移动端首页（桌面端隐藏） -->
+  <div class="home-mobile-container">
+    <!-- 标题 -->
+    <h1 class="home-mobile-title">海子</h1>
+
+    <!-- 诗句 -->
+    <p class="home-mobile-verse">春天，十个海子全部复活</p>
+
+    <!-- 水墨插图 -->
+    <div class="home-mobile-illustration">
+      <img src="/images/phone.webp" alt="水墨画" />
+    </div>
+  </div>
+
 </BaseLayout>

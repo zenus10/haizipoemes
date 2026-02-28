@@ -110,6 +110,81 @@
 }
 
 /* ==========================================
+   年份链接到时间轴
+   ========================================== */
+
+.poem-meta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--colorTextMuted);
+  transition: color var(--transitionFast);
+}
+
+.poem-meta-link:hover {
+  color: var(--colorPrimary);
+}
+
+.poem-meta-link svg {
+  opacity: 0.5;
+  transition: opacity var(--transitionFast);
+}
+
+.poem-meta-link:hover svg {
+  opacity: 1;
+}
+
+/* ==========================================
+   上一首 / 下一首导航
+   ========================================== */
+
+.poem-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: var(--spacingMd);
+  margin-top: var(--spacing2xl);
+  padding-top: var(--spacingXl);
+  border-top: 1px solid var(--colorBorderLight);
+}
+
+.poem-nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacingSm);
+  padding: var(--spacingSm) var(--spacingMd);
+  font-size: var(--fontSizeSm);
+  color: var(--colorTextLight);
+  border-radius: var(--radiusMd);
+  transition: all var(--transitionFast);
+  max-width: 45%;
+}
+
+.poem-nav-link:hover {
+  color: var(--colorPrimary);
+  background: var(--colorBackgroundAlt);
+}
+
+.poem-nav-link--prev {
+  text-align: left;
+}
+
+.poem-nav-link--next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.poem-nav-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poem-nav-link svg {
+  flex-shrink: 0;
+}
+
+/* ==========================================
    诗歌正文
    ========================================== */
 
@@ -301,21 +376,6 @@ toc-nav .toc-link[data-state="past"] {
 toc-nav .toc-link[data-state="active"] {
   color: var(--colorPrimary);
   font-weight: 500;
-}
-
-/* ==========================================
-   动画
-   ========================================== */
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* ==========================================
@@ -535,4 +595,21 @@ toc-nav .toc-link[data-state="active"] {
     padding-left: var(--spacingSm);
     margin: 0.75em 0;
   }
+}
+
+/* ==========================================
+   搜索高亮
+   ========================================== */
+
+mark.search-highlight {
+  background: rgba(255, 200, 50, 0.35);
+  color: inherit;
+  padding: 0.05em 0.15em;
+  border-radius: 2px;
+  animation: highlight-fade 4s ease forwards;
+}
+
+@keyframes highlight-fade {
+  0%, 60% { background: rgba(255, 200, 50, 0.35); }
+  100%    { background: rgba(255, 200, 50, 0.12); }
 }

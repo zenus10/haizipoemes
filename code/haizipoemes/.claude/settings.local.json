@@ -24,7 +24,13 @@
       "Bash(git checkout:*)",
       "Bash(npx astro:*)",
       "Bash(del \"d:\\\\ENTER\\\\海子网站\\\\code\\\\haizipoemes\\\\scripts\\\\create-about.mjs\")",
-      "WebFetch(domain:haizipoemes.netlify.app)"
+      "WebFetch(domain:haizipoemes.netlify.app)",
+      "Bash(wc:*)",
+      "Bash(npm ls:*)",
+      "Bash(npx --yes sharp-cli:*)",
+      "WebFetch(domain:api.fontshare.com)",
+      "Bash(curl:*)",
+      "Bash(file:*)"
     ]
   }
 }

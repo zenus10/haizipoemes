@@ -3,6 +3,39 @@
    HaiZiPoemes Global Styles
    ============================================ */
 
+/* Satoshi 字体 - 自托管 */
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/satoshi-300.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/satoshi-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/satoshi-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Satoshi';
+  src: url('/fonts/satoshi/satoshi-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* CSS 自定义属性 */
 :root {
   /* 颜色 */
@@ -302,47 +335,6 @@ input, textarea, select {
   }
 }
 
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* Chinese Typography Enhancement */
-.chinese-text {
-  font-family: var(--fontDisplay);
-  letter-spacing: 0.05em;
-  line-height: 1.8;
-}
-
-/* Poetry specific styling */
-.poetry-text {
-  font-family: var(--fontDisplay);
-  font-size: var(--fontSizeLg);
-  line-height: 2;
-  letter-spacing: 0.08em;
-}
 
 /* ==========================================
    响应式设计 - 移动端优化

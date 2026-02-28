@@ -346,6 +346,28 @@
   color: var(--colorPrimary);
 }
 
+/* 搜索结果片段 */
+.poem-text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.poem-snippet {
+  font-size: var(--fontSizeXs);
+  color: var(--colorTextMuted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.poem-item:hover .poem-snippet {
+  color: var(--colorTextLight);
+}
+
 /* 空状态 */
 .poem-list-empty {
   display: none;
@@ -498,6 +520,10 @@
     border-radius: var(--radiusFull);
   }
 
+  .search-input {
+    font-size: 16px; /* 防止 iOS Safari 自动缩放 */
+  }
+
   .search-row {
     flex-wrap: wrap;
     margin-bottom: var(--spacingMd);
@@ -537,7 +563,7 @@
   }
 
   .search-input {
-    font-size: var(--fontSizeXs);
+    font-size: 16px; /* 防止 iOS Safari 自动缩放 */
     padding: 8px var(--spacingSm) 8px calc(var(--spacingSm) + 15px + 8px);
   }
 
@@ -552,5 +578,9 @@
 
   .poem-title {
     font-size: var(--fontSizeXs);
+  }
+
+  .poem-snippet {
+    font-size: 11px;
   }
 }

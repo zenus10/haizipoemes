@@ -9,13 +9,38 @@ import '../../styles/pages/poetry-detail.css';
 
 export async function getStaticPaths() {
   const poems = await getCollection('poems');
-  return poems.map(poem => ({
-    params: { slug: poem.slug },
-    props: { poem }
-  }));
+
+  // 类型排序优先级
+  const typeOrder: Record<string, number> = { short: 0, long: 1, sun: 2, essay: 3 };
+
+  // 按 type → year → order 排序
+  const sorted = [...poems].sort((a, b) => {
+    const ta = typeOrder[a.data.type || ''] ?? 99;
+    const tb = typeOrder[b.data.type || ''] ?? 99;
+    if (ta !== tb) return ta - tb;
+    const ya = a.data.year || '0000';
+    const yb = b.data.year || '0000';
+    if (ya !== yb) return ya.localeCompare(yb);
+    return (a.data.order ?? 0) - (b.data.order ?? 0);
+  });
+
+  return sorted.map((poem, index) => {
+    // 同类型内的上一首/下一首
+    const prevPoem = index > 0 && sorted[index - 1].data.type === poem.data.type
+      ? { slug: sorted[index - 1].slug, title: sorted[index - 1].data.title }
+      : null;
+    const nextPoem = index < sorted.length - 1 && sorted[index + 1].data.type === poem.data.type
+      ? { slug: sorted[index + 1].slug, title: sorted[index + 1].data.title }
+      : null;
+
+    return {
+      params: { slug: poem.slug },
+      props: { poem, prevPoem, nextPoem }
+    };
+  });
 }
 
-const { poem } = Astro.props;
+const { poem, prevPoem, nextPoem } = Astro.props;
 const { Content, headings } = await poem.render();
 
 // 获取类型和年份的显示名称
@@ -67,12 +92,43 @@ const jsonLd = {
       <div class="poem-meta">
         {typeLabel && <span>{typeLabel}</span>}
         <span>·</span>
-        <span>{yearLabel}</span>
+        {poem.data.year ? (
+          <a href={`/timeline?year=${poem.data.year}`} class="poem-meta-link" title={`查看 ${poem.data.year} 年时间轴`}>
+            <span>{yearLabel}</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </a>
+        ) : (
+          <span>{yearLabel}</span>
+        )}
       </div>
       <div class="poem-divider"></div>
       <div class="poem-text prose">
         <Content />
       </div>
+
+      <!-- 上一首 / 下一首导航 -->
+      {(prevPoem || nextPoem) && (
+        <nav class="poem-nav">
+          {prevPoem ? (
+            <a href={`/poetry/${prevPoem.slug}`} class="poem-nav-link poem-nav-link--prev">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              <span class="poem-nav-title">{prevPoem.title}</span>
+            </a>
+          ) : <span />}
+          {nextPoem ? (
+            <a href={`/poetry/${nextPoem.slug}`} class="poem-nav-link poem-nav-link--next">
+              <span class="poem-nav-title">{nextPoem.title}</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          ) : <span />}
+        </nav>
+      )}
     </article>
 
     <!-- 桌面端：右侧 sticky 目录 -->
@@ -346,4 +402,50 @@ const jsonLd = {
       tracking = false;
     });
   }
+
+  // ===== 搜索高亮 + 滚动定位 =====
+  ;(function highlightSearchQuery() {
+    const q = new URLSearchParams(location.search).get('q');
+    if (!q) return;
+
+    const container = document.querySelector('.poem-text');
+    if (!container) return;
+
+    const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+    const matches: { node: Text; index: number }[] = [];
+    const qLower = q.toLowerCase();
+
+    // 收集所有匹配位置
+    while (walker.nextNode()) {
+      const node = walker.currentNode as Text;
+      const text = node.textContent || '';
+      let idx = text.toLowerCase().indexOf(qLower);
+      while (idx !== -1) {
+        matches.push({ node, index: idx });
+        idx = text.toLowerCase().indexOf(qLower, idx + 1);
+      }
+    }
+
+    if (matches.length === 0) return;
+
+    // 用 <mark> 包裹匹配文本（倒序处理避免偏移）
+    for (let i = matches.length - 1; i >= 0; i--) {
+      const { node, index } = matches[i];
+      const range = document.createRange();
+      range.setStart(node, index);
+      range.setEnd(node, index + q.length);
+
+      const mark = document.createElement('mark');
+      mark.className = 'search-highlight';
+      range.surroundContents(mark);
+    }
+
+    // 滚动到第一个匹配位置
+    const firstMark = container.querySelector('mark.search-highlight');
+    if (firstMark) {
+      requestAnimationFrame(() => {
+        firstMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
+  })();
 </script>

@@ -1,24 +1,126 @@
 /* 首页样式 */
 body {
-  background: url(/images/haizi-hero.png);
+  background: url(/images/haizi-hero.webp);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 }
 
-/* 响应式 - 移动端优化 */
-@media (max-width: 768px) {
-  body {
-    background-attachment: scroll;
-    background-size: cover;
-    background-position: center top;
-  }
+/* ==========================================
+   桌面端首页
+   ========================================== */
+
+.home-desktop-hero {
+  min-height: calc(100dvh - var(--navHeight) - 4rem);
 }
 
-@media (max-width: 480px) {
+/* ==========================================
+   移动端首页 - 水墨留白风格
+   ========================================== */
+
+.home-mobile-container {
+  display: none;
+}
+
+@media (max-width: 768px) {
   body {
-    background-size: auto 100%;
-    background-position: center center;
+    background: none;
+    background-color: var(--colorBackground);
+    min-height: 100vh;
+  }
+
+  /* 隐藏桌面端 */
+  .home-desktop-hero {
+    display: none;
+  }
+
+  .home-mobile-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100dvh - var(--navHeight));
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 标题 */
+  .home-mobile-title {
+    font-family: var(--fontDisplay);
+    font-size: 2.5rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--colorText);
+    margin: 0;
+    position: absolute;
+    top: 15vh;
+    right: var(--spacingXl);
+    writing-mode: vertical-rl;
+    line-height: 1;
+    animation: titleFadeIn 1s ease-out;
+  }
+
+  @keyframes titleFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 诗句 */
+  .home-mobile-verse {
+    font-family: var(--fontDisplay);
+    font-size: var(--fontSizeSm);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--colorTextLight);
+    margin: 0;
+    position: absolute;
+    right: calc(var(--spacingXl) + 3.2rem);
+    top: 17vh;
+    writing-mode: vertical-rl;
+    line-height: 1.8;
+    animation: verseFadeIn 1s ease-out 0.3s backwards;
+  }
+
+  @keyframes verseFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* 水墨插图 */
+  .home-mobile-illustration {
+    position: absolute;
+    left: -5vw;
+    bottom: 2vh;
+    width: 65vw;
+    max-width: 320px;
+    animation: illustrationFadeIn 1.2s ease-out 0.5s backwards;
+  }
+
+  .home-mobile-illustration img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    filter: contrast(1.1);
+  }
+
+  @keyframes illustrationFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

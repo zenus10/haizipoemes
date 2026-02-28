@@ -12,7 +12,8 @@
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
     "@astrojs/sitemap": "^3.7.0",
-    "astro": "^5.17.1"
+    "astro": "^5.17.1",
+    "fuse.js": "^7.1.0"
   },
   "devDependencies": {
     "@unocss/astro": "^66.5.1",

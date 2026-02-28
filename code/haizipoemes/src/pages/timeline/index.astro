@@ -78,6 +78,13 @@ const defaultIndex = Math.floor(timelineData.length / 2);
     let currentIndex = Math.floor(totalYears / 2);
     let isScrolling = false;
 
+    // 支持 ?year= 参数跳转到对应年份
+    const urlYear = new URLSearchParams(location.search).get('year');
+    if (urlYear) {
+      const idx = Array.from(yearSections).findIndex(s => s.getAttribute('data-year') === urlYear);
+      if (idx >= 0) currentIndex = idx;
+    }
+
     // 虚拟滚动参数
     const STEP = 52;           // 卡片中心间距 (px)
     const VISIBLE_RANGE = 3;   // 可见范围 ±3
