@@ -1,6 +1,7 @@
 # 海子诗歌网站 (HaiZiPoemes)
 
 一个致敬中国当代诗人海子的个人网站，收录其诗歌全集、生平时间轴等信息。
+url：https://haizi.zenus10.com/
 
 ## 🌟 项目特点
 
